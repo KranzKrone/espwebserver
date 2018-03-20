@@ -11,6 +11,8 @@
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
 
+#define HEADER = "<head><title>ESP Webserver</title></head>"
+
 #define TEST_MODUS true
 
 #define HOSTNAME "esp8266"
@@ -31,9 +33,12 @@ void startWiFi() {
   // Wenn aus dem Speicher die Zugangsdatengeholt werden konnten verbindet sich der ESP mit dem WLAN. Wenn nicht wird ein Accesspoint geöffnet.
 
   if (TEST_MODUS) {
-    startWiFiSTA();
+    bool startUp = startWiFiSTA();
+    if (!startUp) {
+      startWiFiAT(false);
+    }
   } else {
-    startWiFiAT();
+    startWiFiAT(false);
   }
 }
 
@@ -47,11 +52,18 @@ bool startWiFiSTA() {
   delay(200);
   WiFi.begin(WIFI_SSID, WIFI_PWORD);
 
+  int i = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    Serial.print(i);
+    if (i > 50) {
+      Serial.println("Die Verbindung mit dem WLAN konnte nicht aufgebaut werden. Es wird ein Accesspoint gestartet.");
+      return false;
+    }
+    i++;
   }
 
+  Serial.println("");
   Serial.println(WiFi.localIP());
   return true;
 }
@@ -60,7 +72,7 @@ bool startWiFiSTA() {
    Accespointmodus
    Hostname: http://192.168.0.1/
 */
-bool startWiFiAT() {
+bool startWiFiAT(bool openAP) {
   IPAddress local_IP(192, 168, 0, 1);
   IPAddress gateway(192, 168, 4, 9);
   IPAddress subnet(255, 255, 255, 0);
@@ -70,14 +82,16 @@ bool startWiFiAT() {
   WiFi.hostname(HOSTNAME);
 
   WiFi.softAPConfig(local_IP, gateway, subnet);
-  WiFi.softAP(HOSTNAME, HOSTNAME);
+  if (openAP)
+    WiFi.softAP(HOSTNAME);
+  else
+    WiFi.softAP(HOSTNAME, HOSTNAME);
 
   Serial.print("IP-Adresse: ");
   Serial.println(WiFi.softAPIP());
   Serial.printf("MAC address = %s\n", WiFi.softAPmacAddress().c_str());
   return true;
 }
-
 
 
 /**
@@ -89,9 +103,22 @@ void setup() {
   delay(200);
   Serial.println("Webserver wird gestartet!");
 
+  startWiFi();
+
   // Hier werden die Seiten im Server definiert.
   server.on("/", []() {
-    server.send(200, "text/html", "Mini Webserver Beispiel");
+    server.send(200, "text/html", "Mini Webserver Beispiel<br /><input type=\"range\" name=\"range\" />");
+  });
+
+  server.on("/settings/", []() {
+    String range = server.arg("range");
+    Serial.print("Range  ist ");
+    Serial.println(range);
+    server.send(200, "text/html", "<h1>Einstellungen</h1><form><input type=\"range\" name=\"range\" value=" + range + " /><input type=\"submit\" value=\"Speichern\" /></form>");
+  });
+
+  server.on("/settings/", []() {
+    server.send(200, "text/html", "<h1>Einstellungen</h1><form post=\"handleGenericArgs\"><input type=\"range\" name=\"range\" /><input type=\"submit\" value=\"Speichern\" /></form>");
   });
 
   server.onNotFound([]() {
