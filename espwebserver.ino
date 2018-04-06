@@ -18,6 +18,8 @@
 #define TEST_MODUS true
 
 #define HOSTNAME "esp8266"
+#define WIFI_SSID "wifissid"
+#define WIFI_PWORD "wifipwd"
 
 #define MOTOR 4
 
