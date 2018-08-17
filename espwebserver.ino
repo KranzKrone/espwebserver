@@ -108,13 +108,20 @@ void setup() {
 
   Serial.begin(9600);
   delay(200);
+  
+  if (!SPIFFS.begin()){
+    Serial.println("SPIFFS Mount failed");
+  } else {
+    Serial.println("SPIFFS Mount succesfull");
+  }
+  
   Serial.println("Webserver wird gestartet!");
   EEPROM.begin(512);
 
   startWiFi();
 
   // Hier werden die Seiten im Server definiert.
-  server.on("/", []() {
+  server.on("/eeprom/", []() {
     Serial.println("Startup");
     // read eeprom for ssid and pass
     Serial.println("Reading EEPROM ssid");
@@ -135,6 +142,38 @@ void setup() {
     Serial.println(epass);
     server.send(200, "text/html", "Mini Webserver Beispiel<br />SSID: " + esid + " | PWD: " + epass);
   });
+  
+  Serial.setDebugOutput(true);
+
+  startWiFi();
+
+  
+  
+  server.serveStatic("/steckdose.xsl", SPIFFS, "/steckdose.xsl");
+  server.serveStatic("/bootstrap.min.css", SPIFFS, "/bootstrap.min.css");
+  
+  // Hier werden die Seiten im Server definiert.
+  server.on("/", []() {
+    Serial.println("Startup");
+
+    String output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"steckdose.xsl\"?><title>ESP 8266</title>";
+    
+    if(server.hasArg("wid")){
+       Serial.println(server.arg("wid"));
+       // output += String.printf("<widv>%s</widv>", server.arg("wid"));
+       // output += "<widv>";
+       // output += server.arg("wid");
+       // output += "</widv>";
+    }
+    if(server.hasArg("wpw")){
+       Serial.println(server.arg("wpw"));
+    }
+    Serial.println(output);
+    server.send(200, "text/xml", output);
+  });
+
+  server.begin();
+  Serial.println("HTTP server started");
 
   server.on("/settings/", []() {
     String range = server.arg("range");
