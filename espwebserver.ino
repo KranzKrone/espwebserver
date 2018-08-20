@@ -11,6 +11,9 @@
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
 #include <EEPROM.h>
+#include <FS.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 #define HEADER = "<head><title>ESP Webserver</title></head>"
@@ -18,8 +21,8 @@
 #define TEST_MODUS true
 
 #define HOSTNAME "esp8266"
-#define WIFI_SSID "wifissid"
-#define WIFI_PWORD "wifipwd"
+#define WIFI_SSID "Internet"
+#define WIFI_PWORD "DownTownFMP!"
 
 #define MOTOR 4
 
@@ -156,18 +159,18 @@ void setup() {
   server.on("/", []() {
     Serial.println("Startup");
 
-    String output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"steckdose.xsl\"?><title>ESP 8266</title>";
+    String output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"steckdose.xsl\"?><root>";
     
     if(server.hasArg("wid")){
        Serial.println(server.arg("wid"));
-       // output += String.printf("<widv>%s</widv>", server.arg("wid"));
-       // output += "<widv>";
-       // output += server.arg("wid");
-       // output += "</widv>";
+       output += "<wid>";
+       output += server.arg("wid");
+       output += "</wid>";
     }
     if(server.hasArg("wpw")){
        Serial.println(server.arg("wpw"));
     }
+    output += "</root>";
     Serial.println(output);
     server.send(200, "text/xml", output);
   });
@@ -184,7 +187,7 @@ void setup() {
     Serial.print("RMS  ist ");
     Serial.println(rms);
     delayms = rms.toInt() * 300;
-    server.send(200, "text/html", "<h1>Einstellungen</h1><form>Range:<input type=\"range\" name=\"range\" value=" + range + " />Delay in MSek * 30<input type=\"range\" name=\"rms\" value=" + rms + " /><input type=\"submit\" value=\"Speichern\" /></form>");
+    server.send(200, "text/html", "<meta charset=\"utf-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><body><h1>Einstellungen</h1><form>Range:<input type=\"range\" name=\"range\" value=" + range + " />Delay in MSek * 30<input type=\"range\" name=\"rms\" value=" + rms + " /><input type=\"submit\" value=\"Speichern\" /></form></body></html>");
   });
 
   server.on("/wlan/", []() {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 <xsl:template match="/">
   <html>
@@ -21,15 +22,15 @@
 				<form>
 					<div class="form-group">
 						<label for="wid">WiFi SSID</label>
-						<input type="text" name="wid" class="form-control" placeholder="WiFi SSID" />
+						<input type="text" name="wid" class="form-control" placeholder="WiFi SSID" value="{//root/wid}" />
 					</div>
 					<div class="form-group">
 						<label for="wpw">WiFi PWD</label>
-						<input type="text" name="wpw" class="form-control" placeholder="WiFi Password" />
+						<input type="text" name="wpw" class="form-control" placeholder="WiFi Password" value="{//root/wpw}" />
 					</div>
 					<div class="form-group">
 						<label for="hostname">hostname</label>
-						<input type="text" name="hostname" class="form-control" placeholder="Hostname" value="{$hostname}" />
+						<input type="text" name="hostname" class="form-control" placeholder="Hostname" value="{//root/hostname}" />
 					</div>
 					<div class="form-group">
 						<input type="submit" class="btn btn-default btn-lg btn-block" value="speichern" />
