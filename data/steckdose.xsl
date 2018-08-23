@@ -7,7 +7,7 @@
   
   <head>
 	<meta charset="utf-8" />
-	<title>ESP 8266</title>
+	<title><xsl:value-of select="//root/title" /></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="bootstrap.min.css" />
   </head>
@@ -29,7 +29,7 @@
 						<input type="text" name="wpw" class="form-control" placeholder="WiFi Password" value="{//root/wpw}" />
 					</div>
 					<div class="form-group">
-						<label for="hostname">hostname</label>
+						<label for="hostname">Hostname</label>
 						<input type="text" name="hostname" class="form-control" placeholder="Hostname" value="{//root/hostname}" />
 					</div>
 					<div class="form-group">
