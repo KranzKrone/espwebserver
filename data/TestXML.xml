@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="steckdose.xsl"?>
+<?xml-stylesheet type="text/xsl" href="design.xsl"?>
 <root>
-	<title>ESP8266</title>
+	<head>
+		<title>ESP 8266</title>
+	</head>
+	<settings>
+		<wid>WiFiID</wid>
+		<wpw>123456789</wpw>
+	</settings>
 </root>
