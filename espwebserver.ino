@@ -152,8 +152,9 @@ void setup() {
 
   
   
-  server.serveStatic("/steckdose.xsl", SPIFFS, "/steckdose.xsl");
-  server.serveStatic("/bootstrap.min.css", SPIFFS, "/bootstrap.min.css");
+  server.serveStatic("/design.xsl", SPIFFS, "/design.xsl");
+  server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css");
+  server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js");
   
   // Hier werden die Seiten im Server definiert.
   server.on("/", []() {
@@ -178,7 +179,7 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
 
-  server.on("/settings/", []() {
+  server.on("/bewegung/", []() {
     String range = server.arg("range");
     Serial.print("Range  ist ");
     Serial.println(range);
@@ -190,7 +191,7 @@ void setup() {
     server.send(200, "text/html", "<meta charset=\"utf-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><body><h1>Einstellungen</h1><form>Range:<input type=\"range\" name=\"range\" value=" + range + " />Delay in MSek * 30<input type=\"range\" name=\"rms\" value=" + rms + " /><input type=\"submit\" value=\"Speichern\" /></form></body></html>");
   });
 
-  server.on("/wlan/", []() {
+  server.on("/setting/", []() {
     String ssid = server.arg("ssid");
     String pwd = server.arg("pwd");
 
