@@ -9,15 +9,16 @@
 		<meta charset="UTF-8" />
 		<title><xsl:value-of select="//root/head/title" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>
+		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
   
 	<body>
 	
 		<nav class="" role="navigation">
-			<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">ESP 8266</a>
+			<div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">ESP 8266</a>
 			  <ul class="right hide-on-med-and-down">
+				<li><a href="/temperatur/">Temperatur</a></li>
 				<li><a href="/settings/">Einstellungen</a></li>
 				<li><a class="waves-effect waves-light btn">Steckdose an / aus</a></li>
 			  </ul>
@@ -27,6 +28,8 @@
 				<li><div class="divider"></div></li>
 				<li><div style="color: black;padding-left: 32px;"><i class="material-icons small left">info</i>Temperatur: 20,0 °C</div></li>
 				<li><div class="divider"></div></li>
+				<li><a href="/">Startseite</a></li>
+				<li><a href="/temperatur/">Temperatur</a></li>
 				<li><a href="/settings/">Einstellungen</a></li>
 			  </ul>
 			  <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -35,26 +38,25 @@
 		
 		<div class="container">
 		<xsl:apply-templates select="settings"/>
+		<xsl:apply-templates select="temperatur"/>
 		</div>
 		
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="materialize.min.js"></script>
+		<script type="text/javascript" src="/materialize.min.js"></script>
 		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>
 
 	</body>
 </html>
 </xsl:template> 
 
-
 <xsl:template match="settings">
   
-	
 		<div class="row">
 			
 			<div class="col l6 m8 s12">
 				<h4>Einstellungen</h4>
 				
-				<div class="raw">
+				<div class="row">
 				<form>
 					<div class="input-field col s12">
 						<input type="text" name="wid" class="form-control" value="{//root/settings/wid}" />
@@ -82,6 +84,22 @@
 				<p>Wird kein WLAN Passwort eingegeben -> wird trotzdem versucht sich mit dem WLAN zuverbinden. Das WLAN Netzwerk wird als frei angesehen.</p>
 			
 			</div>
+		</div>
+
+</xsl:template>
+
+<xsl:template match="temperatur">
+  
+		<div class="row">
+			<div class="col s12">
+				<h4>Temperatur</h4>
+			</div>	
+			<div class="col l6 m6 s12">
+					Außentemperatur				
+			</div>				
+			<div class="col l6 m6 s12">
+					Innentemperatur				
+			</div>			
 		</div>
 
 </xsl:template>

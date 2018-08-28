@@ -21,9 +21,11 @@
 #define TEST_MODUS true
 
 #define HOSTNAME "esp8266"
-#define WIFI_SSID "Internet"
-#define WIFI_PWORD "DownTownFMP!"
+#define WIFI_SSID ""
+#define WIFI_PWORD ""
 
+#define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"design.xsl\"?><root>"
+#define XMLEND "</root>"
 #define MOTOR 4
 
 ESP8266WebServer server(80);
@@ -111,6 +113,7 @@ void setup() {
 
   Serial.begin(9600);
   delay(200);
+  Serial.setDebugOutput(true);
   
   if (!SPIFFS.begin()){
     Serial.println("SPIFFS Mount failed");
@@ -122,6 +125,13 @@ void setup() {
   EEPROM.begin(512);
 
   startWiFi();
+
+  
+  // Statische Dateien wie CSS, JS wird geladen.
+  server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css");
+  server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js");
+  server.serveStatic("/design.xsl", SPIFFS, "/design.xsl");
+  server.serveStatic("/temperatur/design.xsl", SPIFFS, "/design.xsl");
 
   // Hier werden die Seiten im Server definiert.
   server.on("/eeprom/", []() {
@@ -146,32 +156,34 @@ void setup() {
     server.send(200, "text/html", "Mini Webserver Beispiel<br />SSID: " + esid + " | PWD: " + epass);
   });
   
-  Serial.setDebugOutput(true);
-
-  startWiFi();
-
-  
-  
-  server.serveStatic("/design.xsl", SPIFFS, "/design.xsl");
-  server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css");
-  server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js");
   
   // Hier werden die Seiten im Server definiert.
   server.on("/", []() {
     Serial.println("Startup");
 
-    String output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"steckdose.xsl\"?><root>";
+    String output = XMLBEGIN "<settings>";
     
     if(server.hasArg("wid")){
        Serial.println(server.arg("wid"));
-       output += "<wid>";
-       output += server.arg("wid");
-       output += "</wid>";
+       output += "<wid>" + server.arg("wid") + "</wid>";
     }
     if(server.hasArg("wpw")){
-       Serial.println(server.arg("wpw"));
+       output += "<wpw>" + server.arg("wpw") + "</wpw>";
     }
-    output += "</root>";
+    if(server.hasArg("hostname")){
+       output += "<hostname>" + server.arg("hostname") + "</hostname>";
+    }
+    output += "</settings>" XMLEND;
+    Serial.println(output);
+    server.send(200, "text/xml", output);
+  });
+
+  server.on("/temperatur/", []() {
+    Serial.println("Startup");
+
+    String output = XMLBEGIN "<temperatur>";
+    
+    output += "</temperatur>" XMLEND;
     Serial.println(output);
     server.send(200, "text/xml", output);
   });
@@ -191,7 +203,7 @@ void setup() {
     server.send(200, "text/html", "<meta charset=\"utf-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><body><h1>Einstellungen</h1><form>Range:<input type=\"range\" name=\"range\" value=" + range + " />Delay in MSek * 30<input type=\"range\" name=\"rms\" value=" + rms + " /><input type=\"submit\" value=\"Speichern\" /></form></body></html>");
   });
 
-  server.on("/setting/", []() {
+  server.on("/settings/", []() {
     String ssid = server.arg("ssid");
     String pwd = server.arg("pwd");
 
