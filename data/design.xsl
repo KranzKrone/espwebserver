@@ -8,7 +8,7 @@
 		<meta charset="UTF-8" />
 		<title><xsl:value-of select="//root/head/title" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>
+		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/> -->
 		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
@@ -34,7 +34,7 @@
 				<li><a href="/vibrator/">Vibrator</a></li>
 				<li><a href="/settings/">Einstellungen</a></li>
 				<li><div class="divider"></div></li>
-				<li><a class="sidenav-close" href="#!"><i class="tiny material-icons left">info</i>Menü schließen</a></li>
+				<li><a class="sidenav-close" href="#!"><i class="tiny material-icons left">close</i>Menü schließen</a></li>
 			  </ul>
 			  <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 			</div>
@@ -47,7 +47,7 @@
 		</div>
 		
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="materialize.min.js"></script>
+		<!-- <script type="text/javascript" src="materialize.min.js"></script> -->
 		<script type="text/javascript" src="/materialize.min.js"></script>
 		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>
 
@@ -77,9 +77,7 @@
 						<label for="hostname">Hostname</label>
 					</div>
 					<div class="col s12">
-						<button class="btn waves-effect waves-light right" type="submit" name="action">speichern
-						<i class="material-icons left">save</i>
-						</button>
+						<button class="btn waves-effect waves-light right" type="submit"><i class="material-icons left">save</i>speichern</button>
 					</div>
 				</form>
 				</div>
@@ -104,8 +102,14 @@
 					<input type="range" name="range" id="range" min="0" max="100" value="{//root/vibrator/range}" />
 				</p>
 			</div>
+			<div class="input-field col s12">
+				<p class="range-field">
+					<label for="rms">Pausen</label>
+					<input type="range" name="rms" id="rms" min="0" max="100" value="{//root/vibrator/rms}" />
+				</p>
+			</div>
 			<div class="col s12">
-				<button class="btn waves-effect waves-light right" type="submit" name="action"><i class="material-icons left">save</i>setzen</button>
+				<button class="btn waves-effect waves-light right" type="submit"><i class="material-icons left">save</i>setzen</button>
 			</div>
 		</form>
 	</div>

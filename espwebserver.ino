@@ -25,7 +25,6 @@
 #define WIFI_PWORD "DownTownFMP!"
 
 #define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root>"
-// <?xml-stylesheet type=\"text/xsl\" href=\"design.xsl\"?>
 #define XMLEND "</root>"
 #define MOTOR 4
 
@@ -33,6 +32,8 @@ ESP8266WebServer server(80);
 
 int drehzahl = 0;
 int delayms = 0;
+String range = "0";
+String rms = "0";
 
 /**
    Das WiFi wird hier gestartet, die Zugangsdaten werden aus dem EEPROM speicher geholt.
@@ -112,7 +113,7 @@ bool startWiFiAT(bool openAP) {
 */
 void setup() {
 
-  Serial.begin(9600);
+  Serial.begin(115200);
   delay(200);
   Serial.setDebugOutput(true);
   
@@ -126,14 +127,11 @@ void setup() {
   EEPROM.begin(512);
 
   startWiFi();
-
   
   // Statische Dateien wie CSS, JS wird geladen.
-  server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css");
-  server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js");
-  server.serveStatic("/design.xsl", SPIFFS, "/design.xsl");
-  //server.serveStatic("/temperatur/design.xsl", SPIFFS, "/design.xsl");
-  //server.serveStatic("/vibrator/design.xsl", SPIFFS, "/design.xsl");
+  server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=3600");
+  server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js", "max-age=3600");
+  server.serveStatic("/design.xsl", SPIFFS, "/design.xsl", "max-age=60");
 
   // Hier werden die Seiten im Server definiert.
   server.on("/eeprom/", []() {
@@ -194,13 +192,16 @@ void setup() {
   Serial.println("HTTP server started");
 
   server.on("/vibrator/", []() {
-    String range = server.arg("range");
-    Serial.print("Range  ist ");
-    Serial.println(range);
+    
+    if(server.hasArg("range")){
+      range = server.arg("range");
+    }
     drehzahl = range.toInt() * 10;
-    String rms = server.arg("rms");
-    Serial.print("RMS  ist ");
-    Serial.println(rms);
+    
+    if(server.hasArg("rms")){
+      rms = server.arg("rms");
+    }
+    
     delayms = rms.toInt() * 300;
     
     String output = XMLBEGIN "<vibrator><range>" + range + "</range><rms>" + rms + "</rms></vibrator>" XMLEND;
