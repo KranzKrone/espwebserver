@@ -21,10 +21,11 @@
 #define TEST_MODUS true
 
 #define HOSTNAME "esp8266"
-#define WIFI_SSID ""
-#define WIFI_PWORD ""
+#define WIFI_SSID "Internet"
+#define WIFI_PWORD "DownTownFMP!"
 
-#define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"design.xsl\"?><root>"
+#define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root>"
+// <?xml-stylesheet type=\"text/xsl\" href=\"design.xsl\"?>
 #define XMLEND "</root>"
 #define MOTOR 4
 
@@ -131,7 +132,8 @@ void setup() {
   server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css");
   server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js");
   server.serveStatic("/design.xsl", SPIFFS, "/design.xsl");
-  server.serveStatic("/temperatur/design.xsl", SPIFFS, "/design.xsl");
+  //server.serveStatic("/temperatur/design.xsl", SPIFFS, "/design.xsl");
+  //server.serveStatic("/vibrator/design.xsl", SPIFFS, "/design.xsl");
 
   // Hier werden die Seiten im Server definiert.
   server.on("/eeprom/", []() {
@@ -191,7 +193,7 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
 
-  server.on("/bewegung/", []() {
+  server.on("/vibrator/", []() {
     String range = server.arg("range");
     Serial.print("Range  ist ");
     Serial.println(range);
@@ -200,7 +202,10 @@ void setup() {
     Serial.print("RMS  ist ");
     Serial.println(rms);
     delayms = rms.toInt() * 300;
-    server.send(200, "text/html", "<meta charset=\"utf-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><body><h1>Einstellungen</h1><form>Range:<input type=\"range\" name=\"range\" value=" + range + " />Delay in MSek * 30<input type=\"range\" name=\"rms\" value=" + rms + " /><input type=\"submit\" value=\"Speichern\" /></form></body></html>");
+    
+    String output = XMLBEGIN "<vibrator><range>" + range + "</range><rms>" + rms + "</rms></vibrator>" XMLEND;
+    Serial.println(output);
+    server.send(200, "text/xml", output);
   });
 
   server.on("/settings/", []() {
