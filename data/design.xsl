@@ -8,7 +8,7 @@
 		<meta charset="UTF-8" />
 		<title><xsl:value-of select="//root/head/title" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/> -->
+		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>-->
 		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
@@ -123,11 +123,20 @@
 				<h4>Temperatur</h4>
 			</div>	
 			<div class="col l6 m6 s12">
-					Außentemperatur				
+				<h5>Außentemperatur</h5>
+				<div class="center-align" style="font-size: 78px; width: 100%;">
+					<xsl:value-of select="//root/temperatur/aussentemperatur" /> °C
+				</div>
 			</div>				
 			<div class="col l6 m6 s12">
-					Innentemperatur				
-			</div>			
+				<h5>Innentemperatur</h5>
+				<div class="center-align" style="font-size: 78px; width: 100%;">
+					<xsl:value-of select="//root/temperatur/innentemperatur" /> °C
+				</div>
+			</div>
+			<div class="col s12">
+				<span>Messstation: Berlin Franz-Mehring-Platz</span>
+			</div>
 		</div>
 
 </xsl:template>

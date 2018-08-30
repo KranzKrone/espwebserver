@@ -6,14 +6,14 @@
 */
 
 #include <ESP8266WiFi.h>
-#include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-#include <WiFiUdp.h>
 #include <EEPROM.h>
 #include <FS.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 
 #define HEADER = "<head><title>ESP Webserver</title></head>"
@@ -34,6 +34,17 @@ int drehzahl = 0;
 int delayms = 0;
 String range = "0";
 String rms = "0";
+
+// Data wire is plugged into pin D1 on the ESP8266 12-E - GPIO 5
+#define ONE_WIRE_BUS 5
+
+// Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
+OneWire oneWire(ONE_WIRE_BUS);
+
+// Pass our oneWire reference to Dallas Temperature. 
+DallasTemperature DS18B20(&oneWire);
+char temperatureCString[7];
+char temperatureFString[7];
 
 /**
    Das WiFi wird hier gestartet, die Zugangsdaten werden aus dem EEPROM speicher geholt.
@@ -127,11 +138,13 @@ void setup() {
   EEPROM.begin(512);
 
   startWiFi();
+  DS18B20.begin();
+  delay(200);
   
   // Statische Dateien wie CSS, JS wird geladen.
   server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=3600");
   server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js", "max-age=3600");
-  server.serveStatic("/design.xsl", SPIFFS, "/design.xsl", "max-age=60");
+  server.serveStatic("/design.xsl", SPIFFS, "/design.xsl", "max-age=600");
 
   // Hier werden die Seiten im Server definiert.
   server.on("/eeprom/", []() {
@@ -174,17 +187,18 @@ void setup() {
        output += "<hostname>" + server.arg("hostname") + "</hostname>";
     }
     output += "</settings>" XMLEND;
-    Serial.println(output);
+    // Serial.println(output);
     server.send(200, "text/xml", output);
   });
 
   server.on("/temperatur/", []() {
     Serial.println("Startup");
 
-    String output = XMLBEGIN "<temperatur>";
-    
-    output += "</temperatur>" XMLEND;
-    Serial.println(output);
+    String output = XMLBEGIN "<temperatur><innentemperatur>";
+    getTemperature();
+    output += temperatureCString;
+    output += "</innentemperatur></temperatur>" XMLEND;
+    // Serial.println(output);
     server.send(200, "text/xml", output);
   });
 
@@ -205,7 +219,7 @@ void setup() {
     delayms = rms.toInt() * 300;
     
     String output = XMLBEGIN "<vibrator><range>" + range + "</range><rms>" + rms + "</rms></vibrator>" XMLEND;
-    Serial.println(output);
+    // Serial.println(output);
     server.send(200, "text/xml", output);
   });
 
@@ -259,3 +273,17 @@ void loop() {
     analogWrite(MOTOR, 0);
   }
 }
+
+// From https://randomnerdtutorials.com/esp8266-ds18b20-temperature-sensor-web-server-with-arduino-ide/
+void getTemperature() {
+  float tempC;
+  float tempF;
+  do {
+    DS18B20.requestTemperatures(); 
+    tempC = DS18B20.getTempCByIndex(0);
+    dtostrf(tempC, 2, 2, temperatureCString);
+    tempF = DS18B20.getTempFByIndex(0);
+    dtostrf(tempF, 3, 2, temperatureFString);
+    delay(100);
+  } while (tempC == 85.0 || tempC == (-127.0));
+}   

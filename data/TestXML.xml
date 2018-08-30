@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="/design.xsl"?>
-<?xml-stylesheet type="text/xsl" href="design.xsl"?>
+<?xml-stylesheet type="text/xsl" href="https://st-page.de/other/design.xsl"?>
 <root>
 	<head>
 		<title>ESP 8266</title>
 	</head>
-	<vibrator>
-		<range>75</range>
-	</vibrator>
+	<temperatur>
+		<innentemperatur>24 °C</innentemperatur>
+		<aussentemperatur>18 °C</aussentemperatur>
+	</temperatur>
 </root>
