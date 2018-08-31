@@ -16,7 +16,7 @@
 #include <DallasTemperature.h>
 
 
-#define HEADER = "<head><title>ESP Webserver</title></head>"
+// #define HEADER = "<head><title>ESP Webserver</title></head>"
 
 #define TEST_MODUS true
 
@@ -35,16 +35,10 @@ int delayms = 0;
 String range = "0";
 String rms = "0";
 
-// Data wire is plugged into pin D1 on the ESP8266 12-E - GPIO 5
 #define ONE_WIRE_BUS 5
-
-// Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 OneWire oneWire(ONE_WIRE_BUS);
-
-// Pass our oneWire reference to Dallas Temperature. 
 DallasTemperature DS18B20(&oneWire);
-char temperatureCString[7];
-char temperatureFString[7];
+
 
 /**
    Das WiFi wird hier gestartet, die Zugangsdaten werden aus dem EEPROM speicher geholt.
@@ -189,14 +183,14 @@ void setup() {
     output += "</settings>" XMLEND;
     // Serial.println(output);
     server.send(200, "text/xml", output);
+    delay(10);
   });
 
   server.on("/temperatur/", []() {
     Serial.println("Startup");
 
     String output = XMLBEGIN "<temperatur><innentemperatur>";
-    getTemperature();
-    output += temperatureCString;
+    output += getTemperature(0);
     output += "</innentemperatur></temperatur>" XMLEND;
     // Serial.println(output);
     server.send(200, "text/xml", output);
@@ -221,6 +215,7 @@ void setup() {
     String output = XMLBEGIN "<vibrator><range>" + range + "</range><rms>" + rms + "</rms></vibrator>" XMLEND;
     // Serial.println(output);
     server.send(200, "text/xml", output);
+    delay(10);
   });
 
   server.on("/settings/", []() {
@@ -262,6 +257,7 @@ void setup() {
   });
 
   server.begin();
+  delay(20);
 }
 
 void loop() {
@@ -274,16 +270,13 @@ void loop() {
   }
 }
 
-// From https://randomnerdtutorials.com/esp8266-ds18b20-temperature-sensor-web-server-with-arduino-ide/
-void getTemperature() {
-  float tempC;
-  float tempF;
-  do {
+char* getTemperature(int sensor) {
+  char *temperatureCString = "Error";
+  if(DS18B20.getDS18Count() > 0){
     DS18B20.requestTemperatures(); 
-    tempC = DS18B20.getTempCByIndex(0);
+    float tempC = DS18B20.getTempCByIndex(sensor);
     dtostrf(tempC, 2, 2, temperatureCString);
-    tempF = DS18B20.getTempFByIndex(0);
-    dtostrf(tempF, 3, 2, temperatureFString);
     delay(100);
-  } while (tempC == 85.0 || tempC == (-127.0));
+  } 
+  return temperatureCString;
 }   
