@@ -20,7 +20,7 @@
 
 #define TEST_MODUS true
 
-#define HOSTNAME "esp8266"
+#define HOSTNAME "NodeMCU"
 #define WIFI_SSID "Internet"
 #define WIFI_PWORD "DownTownFMP!"
 
@@ -133,7 +133,7 @@ void setup() {
 
   startWiFi();
   DS18B20.begin();
-  delay(200);
+  //delay(200);
   
   // Statische Dateien wie CSS, JS wird geladen.
   server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=3600");
@@ -169,7 +169,6 @@ void setup() {
     Serial.println("Startup");
 
     String output = XMLBEGIN "<settings>";
-    
     if(server.hasArg("wid")){
        Serial.println(server.arg("wid"));
        output += "<wid>" + server.arg("wid") + "</wid>";
@@ -181,18 +180,16 @@ void setup() {
        output += "<hostname>" + server.arg("hostname") + "</hostname>";
     }
     output += "</settings>" XMLEND;
-    // Serial.println(output);
     server.send(200, "text/xml", output);
     delay(10);
   });
 
   server.on("/temperatur/", []() {
-    Serial.println("Startup");
-
-    String output = XMLBEGIN "<temperatur><innentemperatur>";
-    output += getTemperature(0);
-    output += "</innentemperatur></temperatur>" XMLEND;
-    // Serial.println(output);
+    Serial.println("Temperatur XML");
+    String output = XMLBEGIN "<temperatur>";
+    output += "<aussentemperatur>" + String(getTemperature(0)) + "</aussentemperatur>";
+    output += "<innentemperatur>" + String(getTemperature(1)) + "</innentemperatur>";
+    output += "</temperatur>" XMLEND;
     server.send(200, "text/xml", output);
   });
 
@@ -275,7 +272,9 @@ char* getTemperature(int sensor) {
   if(DS18B20.getDS18Count() > 0){
     DS18B20.requestTemperatures(); 
     float tempC = DS18B20.getTempCByIndex(sensor);
-    dtostrf(tempC, 2, 2, temperatureCString);
+    if(tempC > -127){
+      dtostrf(tempC, 2, 2, temperatureCString);
+    }
     delay(100);
   } 
   return temperatureCString;
