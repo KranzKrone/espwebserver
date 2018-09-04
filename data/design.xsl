@@ -9,7 +9,7 @@
 		<title><xsl:value-of select="//root/head/title" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>-->
-		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
+		<link type="text/css" rel="stylesheet" href="https://st-page.de/other/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
   
@@ -48,7 +48,7 @@
 		
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<!-- <script type="text/javascript" src="materialize.min.js"></script> -->
-		<script type="text/javascript" src="/materialize.min.js"></script>
+		<script type="text/javascript" src="https://st-page.de/other/materialize.min.js"></script>
 		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>
 
 	</body>

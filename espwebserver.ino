@@ -5,6 +5,8 @@
    @version 1.0.0
 */
 
+#include <OneWire.h>
+#include <DallasTemperature.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
@@ -12,21 +14,22 @@
 #include <FS.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
-
-
-// #define HEADER = "<head><title>ESP Webserver</title></head>"
 
 #define TEST_MODUS true
 
-#define HOSTNAME "NodeMCU"
+#define HOSTNAME "temperatur"
 #define WIFI_SSID "Internet"
 #define WIFI_PWORD "DownTownFMP!"
 
 #define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root>"
 #define XMLEND "</root>"
 #define MOTOR 4
+
+
+#define ONE_WIRE_BUS 5
+
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature DS18B20(&oneWire);
 
 ESP8266WebServer server(80);
 
@@ -35,9 +38,7 @@ int delayms = 0;
 String range = "0";
 String rms = "0";
 
-#define ONE_WIRE_BUS 5
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature DS18B20(&oneWire);
+
 
 
 /**
@@ -73,7 +74,8 @@ bool startWiFiSTA() {
 
   int i = 0;
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(100);
+    delay(100);
     Serial.print(i);
     if (i > 50) {
       Serial.println("Die Verbindung mit dem WLAN konnte nicht aufgebaut werden. Es wird ein Accesspoint gestartet.");
@@ -129,10 +131,12 @@ void setup() {
   }
   
   Serial.println("Webserver wird gestartet!");
+  
   EEPROM.begin(512);
+  DS18B20.begin();
 
   startWiFi();
-  DS18B20.begin();
+  
   //delay(200);
   
   // Statische Dateien wie CSS, JS wird geladen.
@@ -181,20 +185,18 @@ void setup() {
     }
     output += "</settings>" XMLEND;
     server.send(200, "text/xml", output);
-    delay(10);
   });
 
   server.on("/temperatur/", []() {
     Serial.println("Temperatur XML");
     String output = XMLBEGIN "<temperatur>";
-    output += "<aussentemperatur>" + String(getTemperature(0)) + "</aussentemperatur>";
-    output += "<innentemperatur>" + String(getTemperature(1)) + "</innentemperatur>";
+    output += "<aussentemperatur>" + String(getTemperature(1)) + "</aussentemperatur>";
+    output += "<innentemperatur>" + String(getTemperature(0)) + "</innentemperatur>";
     output += "</temperatur>" XMLEND;
     server.send(200, "text/xml", output);
   });
-
-  server.begin();
-  Serial.println("HTTP server started");
+  
+  
 
   server.on("/vibrator/", []() {
     
@@ -255,6 +257,7 @@ void setup() {
 
   server.begin();
   delay(20);
+  Serial.println("HTTP server started");
 }
 
 void loop() {
@@ -268,14 +271,22 @@ void loop() {
 }
 
 char* getTemperature(int sensor) {
-  char *temperatureCString = "Error";
-  if(DS18B20.getDS18Count() > 0){
-    DS18B20.requestTemperatures(); 
+  
+  int dscounter = DS18B20.getDS18Count();
+  
+  if(dscounter > 0 && sensor < dscounter){
+    
+    yield();
+    DS18B20.requestTemperatures();
     float tempC = DS18B20.getTempCByIndex(sensor);
+    yield();
+    
     if(tempC > -127){
-      dtostrf(tempC, 2, 2, temperatureCString);
+      char* test = "Test";
+      dtostrf(tempC, 2, 2, test);
+      return test;
     }
-    delay(100);
+    
   } 
-  return temperatureCString;
+  return "Error";
 }   
