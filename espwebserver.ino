@@ -139,12 +139,12 @@ void setup() {
   startWiFi();
   
   //delay(200);
-  Serial.printf("Temperatur der Klasse DS18B20 beträgt %d.\n", sensoren.getDS18B20Celsius(0));
+  Serial.printf("Temperatur der Klasse DS18B20 beträgt %s.\n", sensoren.getDS18B20Celsius(0));
   
   // Statische Dateien wie CSS, JS wird geladen.
-  server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=3600");
-  server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js", "max-age=3600");
-  server.serveStatic("/design.xsl", SPIFFS, "/design.xsl", "max-age=600");
+  server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=7200");
+  server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js", "max-age=7200");
+  server.serveStatic("/design.xsl", SPIFFS, "/design.xsl", "max-age=7200");
 
   // Hier werden die Seiten im Server definiert.
   server.on("/eeprom/", []() {
