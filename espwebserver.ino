@@ -14,6 +14,7 @@
 #include <FS.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "DS18B20.h"
 
 #define TEST_MODUS true
 
@@ -29,7 +30,9 @@
 #define ONE_WIRE_BUS 5
 
 OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature DS18B20(&oneWire);
+DallasTemperature templib(&oneWire);
+
+DS18B20 sensoren(ONE_WIRE_BUS);
 
 ESP8266WebServer server(80);
 
@@ -37,8 +40,6 @@ int drehzahl = 0;
 int delayms = 0;
 String range = "0";
 String rms = "0";
-
-
 
 
 /**
@@ -133,11 +134,12 @@ void setup() {
   Serial.println("Webserver wird gestartet!");
   
   EEPROM.begin(512);
-  DS18B20.begin();
+  templib.begin();
 
   startWiFi();
   
   //delay(200);
+  Serial.printf("Temperatur der Klasse DS18B20 beträgt %d.\n", sensoren.getDS18B20Celsius(0));
   
   // Statische Dateien wie CSS, JS wird geladen.
   server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=3600");
@@ -190,8 +192,8 @@ void setup() {
   server.on("/temperatur/", []() {
     Serial.println("Temperatur XML");
     String output = XMLBEGIN "<temperatur>";
-    output += "<aussentemperatur>" + String(getTemperature(1)) + "</aussentemperatur>";
-    output += "<innentemperatur>" + String(getTemperature(0)) + "</innentemperatur>";
+    output += "<aussentemperatur>" + String(getTemperature(0)) + "</aussentemperatur>";
+    output += "<innentemperatur>" + String(getTemperature(1)) + "</innentemperatur>";
     output += "</temperatur>" XMLEND;
     server.send(200, "text/xml", output);
   });
@@ -272,13 +274,13 @@ void loop() {
 
 char* getTemperature(int sensor) {
   
-  int dscounter = DS18B20.getDS18Count();
+  int dscounter = templib.getDS18Count();
   
   if(dscounter > 0 && sensor < dscounter){
     
     yield();
-    DS18B20.requestTemperatures();
-    float tempC = DS18B20.getTempCByIndex(sensor);
+    templib.requestTemperatures();
+    float tempC = templib.getTempCByIndex(sensor);
     yield();
     
     if(tempC > -127){
