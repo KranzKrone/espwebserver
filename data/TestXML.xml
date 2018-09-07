@@ -4,8 +4,7 @@
 	<head>
 		<title>ESP 8266</title>
 	</head>
-	<settings>
-		<innentemperatur>24</innentemperatur>
-		<aussentemperatur>18</aussentemperatur>
-	</settings>
+	<startpage>
+		
+	</startpage>
 </root>

@@ -22,7 +22,7 @@
 #define WIFI_SSID "Internet"
 #define WIFI_PWORD "DownTownFMP!"
 
-#define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root>"
+#define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root><head><title>ESP8266 - Websever</title></head>"
 #define XMLEND "</root>"
 #define MOTOR 4
 
@@ -146,45 +146,22 @@ void setup() {
   server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js", "max-age=7200");
   server.serveStatic("/design.xsl", SPIFFS, "/design.xsl", "max-age=7200");
 
-  // Hier werden die Seiten im Server definiert.
-  server.on("/eeprom/", []() {
-    Serial.println("Startup");
-    // read eeprom for ssid and pass
-    Serial.println("Reading EEPROM ssid");
-    String esid;
-    for (int i = 0; i < 32; ++i)
-    {
-      esid += char(EEPROM.read(i));
-    }
-    Serial.print("SSID: ");
-    Serial.println(esid);
-    Serial.println("Reading EEPROM pass");
-    String epass = "";
-    for (int i = 32; i < 96; ++i)
-    {
-      epass += char(EEPROM.read(i));
-    }
-    Serial.print("PASS: ");
-    Serial.println(epass);
-    server.send(200, "text/html", "Mini Webserver Beispiel<br />SSID: " + esid + " | PWD: " + epass);
+  server.on("/", []() {
+    Serial.println("Startpage");
+    String output = XMLBEGIN "<startpage>";
+    output += "</startpage>" XMLEND;
+    server.send(200, "text/xml", output);
   });
   
   
   // Hier werden die Seiten im Server definiert.
-  server.on("/", []() {
+  server.on("/settings/", []() {
     Serial.println("Startup");
 
     String output = XMLBEGIN "<settings>";
-    if(server.hasArg("wid")){
-       Serial.println(server.arg("wid"));
-       output += "<wid>" + server.arg("wid") + "</wid>";
-    }
-    if(server.hasArg("wpw")){
-       output += "<wpw>" + server.arg("wpw") + "</wpw>";
-    }
-    if(server.hasArg("hostname")){
-       output += "<hostname>" + server.arg("hostname") + "</hostname>";
-    }
+    output += (server.hasArg("wid")) ? "<wid>" + server.arg("wid") + "</wid>":"";
+    output += (server.hasArg("wpw")) ? "<wpw>" + server.arg("wpw") + "</wpw>":"";
+    output += (server.hasArg("hostname")) ? "<hostname>" + server.arg("hostname") + "</hostname>" : "";
     output += "</settings>" XMLEND;
     server.send(200, "text/xml", output);
   });
@@ -202,55 +179,15 @@ void setup() {
 
   server.on("/vibrator/", []() {
     
-    if(server.hasArg("range")){
-      range = server.arg("range");
-    }
+    range = (server.hasArg("range")) ? server.arg("range") : range;
     drehzahl = range.toInt() * 10;
     
-    if(server.hasArg("rms")){
-      rms = server.arg("rms");
-    }
-    
+    rms = (server.hasArg("rms")) ? server.arg("rms") : rms;
     delayms = rms.toInt() * 300;
     
     String output = XMLBEGIN "<vibrator><range>" + range + "</range><rms>" + rms + "</rms></vibrator>" XMLEND;
-    // Serial.println(output);
     server.send(200, "text/xml", output);
     delay(10);
-  });
-
-  server.on("/settings/", []() {
-    String ssid = server.arg("ssid");
-    String pwd = server.arg("pwd");
-
-    int lssid = ssid.length();
-    int lpwd = pwd.length();
-
-    String errortext = (lssid == 0) ? "Bitte geben Sie SSID und Passwort ein." : "";
-
-    if (lssid > 0) {
-      Serial.println("writing eeprom ssid:");
-      for (int i = 0; i < ssid.length(); ++i)
-      {
-        EEPROM.write(i, ssid[i]);
-        Serial.print("Wrote: ");
-        Serial.println(ssid[i]);
-      }
-
-      Serial.println("writing eeprom pass:");
-      for (int i = 0; i < pwd.length(); ++i)
-      {
-        EEPROM.write(32 + i, pwd[i]);
-        Serial.print("Wrote: ");
-        Serial.println(pwd[i]);
-      }
-      
-      delay(300);
-      EEPROM.commit();
-    }
-
-
-    server.send(200, "text/html", errortext + "<h1>WLAN-Einstellungen</h1><form><input type=\"text\" name=\"ssid\" /><input type=\"text\" name=\"pwd\" /><input type=\"submit\" value=\"Speichern\" /></form>");
   });
 
   server.onNotFound([]() {
@@ -264,12 +201,10 @@ void setup() {
 
 void loop() {
   server.handleClient();
-
-  if (drehzahl > 200) {
-    analogWrite(MOTOR, drehzahl);
-  } else {
-    analogWrite(MOTOR, 0);
-  }
+  // Hier dreht der Motor
+  (drehzahl > 200) ? analogWrite(MOTOR, drehzahl) : analogWrite(MOTOR, 0);
+  // Kleine Pause zum Erhalt der WiFi-Verbindung.
+  yield();
 }
 
 char* getTemperature(int sensor) {
@@ -285,7 +220,7 @@ char* getTemperature(int sensor) {
     
     if(tempC > -127){
       char* test = "Test";
-      dtostrf(tempC, 2, 2, test);
+      dtostrf(tempC, 2, 1, test);
       return test;
     }
     
