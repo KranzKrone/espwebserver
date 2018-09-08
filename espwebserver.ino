@@ -103,7 +103,6 @@ bool startWiFiAT(bool openAP) {
   return true;
 }
 
-
 /**
    Programm startet hier.
 */
@@ -135,7 +134,6 @@ void setup() {
     output += "</startpage>" XMLEND;
     server.send(200, "text/xml", output);
   });
-  
   
   // Hier werden die Seiten im Server definiert.
   server.on("/settings/", []() {
