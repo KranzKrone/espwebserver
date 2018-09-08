@@ -2,7 +2,7 @@
    Sketch für ESP Webserver
 
    @author Stefan Krone
-   @version 1.0.0
+   @version 0.0.0
 */
 
 #include <OneWire.h>
@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "DS18B20.h"
-
-#define TEST_MODUS true
 
 #define HOSTNAME "temperatur"
 #define WIFI_SSID "Internet"
@@ -50,15 +48,8 @@ String rms = "0";
    @return Normalmode - true, AcceesPointMode - false
 */
 void startWiFi() {
-
   // Wenn aus dem Speicher die Zugangsdatengeholt werden konnten verbindet sich der ESP mit dem WLAN. Wenn nicht wird ein Accesspoint geöffnet.
-
-  if (TEST_MODUS) {
-    bool startUp = startWiFiSTA();
-    if (!startUp) {
-      startWiFiAT(false);
-    }
-  } else {
+  if (!startWiFiSTA()) {
     startWiFiAT(false);
   }
 }
@@ -104,10 +95,7 @@ bool startWiFiAT(bool openAP) {
   WiFi.hostname(HOSTNAME);
 
   WiFi.softAPConfig(local_IP, gateway, subnet);
-  if (openAP)
-    WiFi.softAP(HOSTNAME);
-  else
-    WiFi.softAP(HOSTNAME, HOSTNAME);
+  (openAP) ? WiFi.softAP(HOSTNAME) : WiFi.softAP(HOSTNAME, HOSTNAME);
 
   Serial.print("IP-Adresse: ");
   Serial.println(WiFi.softAPIP());
@@ -125,12 +113,7 @@ void setup() {
   delay(200);
   Serial.setDebugOutput(true);
   
-  if (!SPIFFS.begin()){
-    Serial.println("SPIFFS Mount failed");
-  } else {
-    Serial.println("SPIFFS Mount succesfull");
-  }
-  
+  Serial.println( (!SPIFFS.begin()) ? "SPIFFS Mount failed" : "SPIFFS Mount succesfull");
   Serial.println("Webserver wird gestartet!");
   
   EEPROM.begin(512);
@@ -160,6 +143,7 @@ void setup() {
 
     String output = XMLBEGIN "<settings>";
     output += (server.hasArg("wid")) ? "<wid>" + server.arg("wid") + "</wid>":"";
+    output += (server.hasArg("wuser")) ? "<wuser>" + server.arg("wuser") + "</wuser>":"";
     output += (server.hasArg("wpw")) ? "<wpw>" + server.arg("wpw") + "</wpw>":"";
     output += (server.hasArg("hostname")) ? "<hostname>" + server.arg("hostname") + "</hostname>" : "";
     output += "</settings>" XMLEND;
@@ -187,7 +171,7 @@ void setup() {
     
     String output = XMLBEGIN "<vibrator><range>" + range + "</range><rms>" + rms + "</rms></vibrator>" XMLEND;
     server.send(200, "text/xml", output);
-    delay(10);
+    yield();
   });
 
   server.onNotFound([]() {
@@ -195,8 +179,8 @@ void setup() {
   });
 
   server.begin();
-  delay(20);
   Serial.println("HTTP server started");
+  yield();
 }
 
 void loop() {
