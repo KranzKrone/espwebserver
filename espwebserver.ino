@@ -17,10 +17,6 @@
 #include "ConfigManager.h"
 #include "DS18B20.h"
 
-#define HOSTNAME "tempy"
-#define WIFI_SSID "test"
-#define WIFI_PWORD "testpass"
-
 #define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root><head><title>ESP8266 - Websever</title></head>"
 #define XMLEND "</root>"
 #define MOTOR 4
@@ -61,10 +57,10 @@ bool startWiFiSTA() {
   WiFi.persistent(false);
   WiFi.mode(WIFI_OFF);
   WiFi.mode(WIFI_STA);
-  WiFi.hostname(HOSTNAME);
-  MDNS.begin(HOSTNAME);
+  WiFi.hostname(configuration.wifihost);
+  MDNS.begin(configuration.wifihost);
   delay(200);
-  WiFi.begin(WIFI_SSID, WIFI_PWORD);
+  WiFi.begin(configuration.wifissid, configuration.wifipass);
 
   int i = 0;
   while (WiFi.status() != WL_CONNECTED) {
@@ -94,10 +90,10 @@ bool startWiFiAT(bool openAP) {
 
   WiFi.mode(WIFI_OFF);
   WiFi.mode(WIFI_AP);
-  WiFi.hostname(HOSTNAME);
+  WiFi.hostname(configuration.wifihost);
 
   WiFi.softAPConfig(local_IP, gateway, subnet);
-  (openAP) ? WiFi.softAP(HOSTNAME) : WiFi.softAP(HOSTNAME, HOSTNAME);
+  (openAP) ? WiFi.softAP(configuration.wifihost) : WiFi.softAP(configuration.wifihost, configuration.wifihost);
 
   Serial.print("IP-Adresse: ");
   Serial.println(WiFi.softAPIP());
@@ -119,8 +115,8 @@ void setup() {
   Serial.printf("Config Version: %s.\n", EEPROMManager::ver);
 
   strcpy(configuration.vnr, EEPROMManager::ver);
-  strcpy(configuration.wifissid, "events");
-  strcpy(configuration.wifipass, "wifipass");
+  strcpy(configuration.wifissid, "Internet");
+  strcpy(configuration.wifipass, "DownTownFMP!");
   strcpy(configuration.wifihost, "tempy");
 
   Serial.printf("Configuration SSID: %s.\n", configuration.wifissid);
