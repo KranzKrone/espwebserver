@@ -14,11 +14,12 @@
 #include <FS.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "ConfigManager.h"
 #include "DS18B20.h"
 
-#define HOSTNAME "temperatur"
-#define WIFI_SSID "Internet"
-#define WIFI_PWORD "DownTownFMP!"
+#define HOSTNAME "tempy"
+#define WIFI_SSID "test"
+#define WIFI_PWORD "testpass"
 
 #define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root><head><title>ESP8266 - Websever</title></head>"
 #define XMLEND "</root>"
@@ -39,6 +40,7 @@ int delayms = 0;
 String range = "0";
 String rms = "0";
 
+configuration_type configuration;
 
 /**
    Das WiFi wird hier gestartet, die Zugangsdaten werden aus dem EEPROM speicher geholt.
@@ -107,13 +109,21 @@ bool startWiFiAT(bool openAP) {
    Programm startet hier.
 */
 void setup() {
-
+ 
   Serial.begin(115200);
   delay(200);
   Serial.setDebugOutput(true);
   
   Serial.println( (!SPIFFS.begin()) ? "SPIFFS Mount failed" : "SPIFFS Mount succesfull");
   Serial.println("Webserver wird gestartet!");
+  Serial.printf("Config Version: %s.\n", EEPROMManager::ver);
+
+  strcpy(configuration.vnr, EEPROMManager::ver);
+  strcpy(configuration.wifissid, "events");
+  strcpy(configuration.wifipass, "wifipass");
+  strcpy(configuration.wifihost, "tempy");
+
+  Serial.printf("Configuration SSID: %s.\n", configuration.wifissid);
   
   EEPROM.begin(512);
   templib.begin();
@@ -184,6 +194,7 @@ void setup() {
 void loop() {
   server.handleClient();
   // Hier dreht der Motor
+  yield();
   (drehzahl > 200) ? analogWrite(MOTOR, drehzahl) : analogWrite(MOTOR, 0);
   // Kleine Pause zum Erhalt der WiFi-Verbindung.
   yield();
