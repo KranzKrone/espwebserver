@@ -10,7 +10,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-#include <EEPROM.h>
+// #include <EEPROM.h>
 #include <FS.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,7 +36,7 @@ int delayms = 0;
 String range = "0";
 String rms = "0";
 
-configuration_type configuration;
+ConfigManager conman;
 
 /**
    Das WiFi wird hier gestartet, die Zugangsdaten werden aus dem EEPROM speicher geholt.
@@ -57,10 +57,10 @@ bool startWiFiSTA() {
   WiFi.persistent(false);
   WiFi.mode(WIFI_OFF);
   WiFi.mode(WIFI_STA);
-  WiFi.hostname(configuration.wifihost);
-  MDNS.begin(configuration.wifihost);
+  WiFi.hostname(conman.cfg.wifihost);
+  MDNS.begin(conman.cfg.wifihost);
   delay(200);
-  WiFi.begin(configuration.wifissid, configuration.wifipass);
+  WiFi.begin(conman.cfg.wifissid, conman.cfg.wifipass);
 
   int i = 0;
   while (WiFi.status() != WL_CONNECTED) {
@@ -90,10 +90,10 @@ bool startWiFiAT(bool openAP) {
 
   WiFi.mode(WIFI_OFF);
   WiFi.mode(WIFI_AP);
-  WiFi.hostname(configuration.wifihost);
+  WiFi.hostname(conman.cfg.wifihost);
 
   WiFi.softAPConfig(local_IP, gateway, subnet);
-  (openAP) ? WiFi.softAP(configuration.wifihost) : WiFi.softAP(configuration.wifihost, configuration.wifihost);
+  (openAP) ? WiFi.softAP(conman.cfg.wifihost) : WiFi.softAP(conman.cfg.wifihost, conman.cfg.wifihost);
 
   Serial.print("IP-Adresse: ");
   Serial.println(WiFi.softAPIP());
@@ -112,16 +112,21 @@ void setup() {
   
   Serial.println( (!SPIFFS.begin()) ? "SPIFFS Mount failed" : "SPIFFS Mount succesfull");
   Serial.println("Webserver wird gestartet!");
-  Serial.printf("Config Version: %s.\n", EEPROMManager::ver);
 
-  strcpy(configuration.vnr, EEPROMManager::ver);
-  strcpy(configuration.wifissid, "Internet");
-  strcpy(configuration.wifipass, "DownTownFMP!");
-  strcpy(configuration.wifihost, "tempy");
+  conman.loadConfig();
+  // Befüllen der Configuration zum Testen
+  /*strcpy(conman.cfg.wifissid, "Internet");
+  strcpy(conman.cfg.wifipass, "DownTownFMP!");
+  strcpy(conman.cfg.wifihost, "tempy");
 
-  Serial.printf("Configuration SSID: %s.\n", configuration.wifissid);
+  Serial.printf("conman. SSID: %s.\n", conman.cfg.wifissid);
+  conman.saveConfig();
   
-  EEPROM.begin(512);
+  strcpy(conman.cfg.wifissid, "anders");
+  Serial.printf("conman. SSID: %s.\n", conman.cfg.wifissid);
+  conman.loadConfig();
+  Serial.printf("conman. SSID: %s.\n", conman.cfg.wifissid);*/
+  Serial.printf("conman. SSID: %s.\n", conman.cfg.wifissid);
   templib.begin();
 
   startWiFi();
@@ -163,8 +168,6 @@ void setup() {
     server.send(200, "text/xml", output);
   });
   
-  
-
   server.on("/vibrator/", []() {
     
     range = (server.hasArg("range")) ? server.arg("range") : range;
@@ -189,8 +192,8 @@ void setup() {
 
 void loop() {
   server.handleClient();
-  // Hier dreht der Motor
   yield();
+  // Hier dreht der Motor
   (drehzahl > 200) ? analogWrite(MOTOR, drehzahl) : analogWrite(MOTOR, 0);
   // Kleine Pause zum Erhalt der WiFi-Verbindung.
   yield();
