@@ -11,10 +11,14 @@
 		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/> -->
 		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<style>
+				body {display: flex;min-height: 100vh;flex-direction: column;}
+				main {flex: 1 0 auto;}
+		</style>
 	</head>
   
 	<body>
-	
+		<header>
 		<nav class="" role="navigation">
 			<div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">ESP 8266</a>
 			  <ul class="right hide-on-med-and-down">
@@ -39,13 +43,25 @@
 			  <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 			</div>
 		</nav>
+		</header>
 		
-		<div class="container">
-		<xsl:apply-templates select="startpage"/>
-		<xsl:apply-templates select="settings"/>
-		<xsl:apply-templates select="temperatur"/>
-		<xsl:apply-templates select="vibrator"/>
+		<main>
+			<div class="container">
+			<xsl:apply-templates select="startpage"/>
+			<xsl:apply-templates select="settings"/>
+			<xsl:apply-templates select="temperatur"/>
+			<xsl:apply-templates select="vibrator"/>
+			</div>
+		</main>
+		
+		<footer class="page-footer">
+		<div class="footer-copyright">
+			<div class="container">
+				© 2018 by <a class="grey-text text-lighten-4" href="https://github.com/KranzKrone/espwebserver/">KranzKrone</a>
+				<a class="grey-text text-lighten-4 right" href="https://github.com/KranzKrone/espwebserver/">Code on GitHub.com</a>
+			</div>
 		</div>
+		</footer>
 		
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<!-- <script type="text/javascript" src="materialize.min.js"></script> -->
