@@ -6,9 +6,9 @@
   
 	<head>
 		<meta charset="UTF-8" />
-		<title><xsl:value-of select="//root/head/title" /></title>
+		<title><xsl:value-of select="//root/head/esptitle" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/> -->
+		<link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>
 		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<style>
@@ -20,7 +20,7 @@
 	<body>
 		<header>
 		<nav class="" role="navigation">
-			<div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">ESP 8266</a>
+			<div class="nav-wrapper container small"><a id="logo-container" href="/" class="brand-logo small"><xsl:value-of select="//root/head/esptitle" /></a>
 			  <ul class="right hide-on-med-and-down">
 				<li><a href="/temperatur/">Temperatur</a></li>
 				<li><a href="/vibrator/">Vibrator</a></li>
@@ -64,7 +64,7 @@
 		</footer>
 		
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<!-- <script type="text/javascript" src="materialize.min.js"></script> -->
+		<script type="text/javascript" src="materialize.min.js"></script>
 		<script type="text/javascript" src="/materialize.min.js"></script>
 		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>
 
@@ -75,35 +75,41 @@
 <xsl:template match="settings">
   
 		<div class="row">
-			
-			<div class="col l6 m8 s12">
+			<div class="col l12 m12 s12">
 				<h4>Einstellungen</h4>
-				<h5>WiFi</h5>
-				<div class="row">
-				<form>
-					<div class="input-field col s12">
-						<input type="text" name="wid" class="form-control" value="{//root/settings/wid}" />
-						<label for="wid">WiFi SSID</label>
-					</div>
-					<div class="input-field col s12">
-						<input type="text" name="wuser" class="form-control" value="{//root/settings/wuser}" />
-						<label for="wuser">WiFi User</label>
-					</div>
-					<div class="input-field col s12">
-						<input type="password" name="wpw" class="form-control" value="{//root/settings/wpw}" />
-						<label for="wpw">WiFi Passwort</label>
-					</div>
-					<div class="input-field col s12">
-						<input type="text" name="hostname" class="form-control" value="{//root/settings/hostname}" />
-						<label for="hostname">Hostname</label>
-					</div>
-					<div class="col s12">
-						<button class="btn waves-effect waves-light right" type="submit" name="save_eeprom" value="save"><i class="material-icons left">save</i>speichern</button>
-					</div>
-				</form>
-				</div>
-			
 			</div>
+			<form>
+			<div class="col l6 m6 s12">				
+				<h5>WiFi</h5>
+				<div class="input-field col s12">
+					<input type="text" name="wid" class="form-control" value="{//root/settings/wid}" />
+					<label for="wid">WiFi SSID</label>
+				</div>
+				<div class="input-field col s12">
+					<input type="text" name="wuser" class="form-control" value="{//root/settings/wuser}" />
+					<label for="wuser">WiFi User</label>
+				</div>
+				<div class="input-field col s12">
+					<input type="password" name="wpw" class="form-control" value="{//root/settings/wpw}" />
+					<label for="wpw">WiFi Password / User Password</label>
+				</div>
+				<div class="input-field col s12">
+					<input type="text" name="hostname" class="form-control" value="{//root/settings/hostname}" />
+					<label for="hostname">Hostname</label>
+				</div>
+				
+			</div>
+			<div class="col l6 m6 s12">
+				<h5>Main Settings</h5>
+				<div class="input-field col s12">
+					<input type="text" name="esptitle" class="form-control" value="{//root/settings/esptitle}" maxlength="10" />
+					<label for="esptitle">Main Title</label>
+				</div>
+			</div>
+			<div class="col s12">
+				<button class="btn waves-effect waves-light right" type="submit" name="save_eeprom" value="save"><i class="material-icons left">save</i>speichern</button>
+			</div>
+			</form>
 			<div class="col l6 m4 s12">
 				<h5>Hinweise</h5>
 				<p>Wird kein WLAN Passwort eingegeben -> wird trotzdem versucht sich mit dem WLAN zuverbinden. Das WLAN Netzwerk wird als frei angesehen.</p>

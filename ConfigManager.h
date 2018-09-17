@@ -10,7 +10,8 @@ class ConfigManager {
       char wifissid[32];
       char wifiuser[36];
       char wifipass[64];
-      char wifihost[24]; 
+      char wifihost[24];
+      char esptitle[10]; 
     };
 
     // Config DBO

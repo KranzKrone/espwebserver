@@ -17,7 +17,7 @@
 #include "ConfigManager.h"
 #include "DS18B20.h"
 
-#define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root><head><title>ESP8266 - Websever</title></head>"
+#define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root><head><title>ESP8266 - Websever</title><esptitle>Steckdose :: Küche</esptitle></head>"
 #define XMLEND "</root>"
 #define MOTOR 4
 
@@ -147,6 +147,7 @@ void setup() {
       (server.hasArg("wuser")) ? strcpy(conman.cfg.wifiuser, server.arg("wuser").c_str() ) : "";
       (server.hasArg("wpw")) ? strcpy(conman.cfg.wifipass, server.arg("wpw").c_str() ) : "";
       (server.hasArg("hostname")) ? strcpy(conman.cfg.wifihost, server.arg("hostname").c_str() ) : "";
+      (server.hasArg("esptitle")) ? strcpy(conman.cfg.esptitle, server.arg("esptitle").c_str() ) : "";
       conman.saveConfig();
       Serial.println("Konfiguration im EEPROM gespeichert.");
     } 
@@ -163,6 +164,7 @@ void setup() {
     output += "<wuser>" + String(conman.cfg.wifiuser) + "</wuser>";
     output += "<wpw>" + String(conman.cfg.wifipass) + "</wpw>";
     output += "<hostname>" + String(conman.cfg.wifihost) + "</hostname>";
+    output += "<esptitle>" + String(conman.cfg.esptitle) + "</esptitle>";
     output += "</settings>" XMLEND;
     
     server.send(200, "text/xml", output);

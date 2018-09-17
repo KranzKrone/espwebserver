@@ -3,9 +3,10 @@
 <root>
 	<head>
 		<title>ESP 8266</title>
+		<esptitle>Steckdose::Kü</esptitle>
 		<msg>Konfiguration gespeichert.</msg>
 	</head>
-	<startpage>
+	<settings>
 		
-	</startpage>
+	</settings>
 </root>
