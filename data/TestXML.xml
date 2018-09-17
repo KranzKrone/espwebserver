@@ -3,8 +3,9 @@
 <root>
 	<head>
 		<title>ESP 8266</title>
+		<msg>Konfiguration gespeichert.</msg>
 	</head>
-	<startpage>
+	<settings>
 		
-	</startpage>
+	</settings>
 </root>

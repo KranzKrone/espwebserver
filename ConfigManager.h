@@ -12,12 +12,17 @@ class ConfigManager {
       char wifipass[64];
       char wifihost[24]; 
     };
-    cfgstruct cfg; 
+
+    // Config DBO
+    cfgstruct cfg;
+    static int eeSize;
+    // init with EEPROM Size
+    ConfigManager(int esize=4095); 
     // get config data from eeprom 
     void loadConfig();
     // save (update) config data
     void saveConfig();
     // löschen des Speicher
-    void deleteConfig(); 
+    void deleteConfig();
 };
   

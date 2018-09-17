@@ -10,10 +10,10 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-// #include <EEPROM.h>
 #include <FS.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "ConfigManager.h"
 #include "DS18B20.h"
 
@@ -21,6 +21,7 @@
 #define XMLEND "</root>"
 #define MOTOR 4
 
+using namespace std;
 
 #define ONE_WIRE_BUS 5
 
@@ -113,22 +114,13 @@ void setup() {
   Serial.println( (!SPIFFS.begin()) ? "SPIFFS Mount failed" : "SPIFFS Mount succesfull");
   Serial.println("Webserver wird gestartet!");
 
+  // Die Konfiguration lade ich hier.
   conman.loadConfig();
-  // Befüllen der Configuration zum Testen
-  /*strcpy(conman.cfg.wifissid, "Internet");
-  strcpy(conman.cfg.wifipass, "DownTownFMP!");
-  strcpy(conman.cfg.wifihost, "tempy");
-
-  Serial.printf("conman. SSID: %s.\n", conman.cfg.wifissid);
-  conman.saveConfig();
-  
-  strcpy(conman.cfg.wifissid, "anders");
-  Serial.printf("conman. SSID: %s.\n", conman.cfg.wifissid);
-  conman.loadConfig();
-  Serial.printf("conman. SSID: %s.\n", conman.cfg.wifissid);*/
-  Serial.printf("conman. SSID: %s.\n", conman.cfg.wifissid);
   templib.begin();
-
+  
+  Serial.printf("Die Länge des Strings beträgt: %i\n", sizeof(conman.cfg.wifiuser) / sizeof(*conman.cfg.wifiuser) ); 
+  /*std::string hallo = conman.cfg.wifiuser;
+  Serial.println( (hallo.empty()) ? "Ja" : "Nein" ); */
   startWiFi();
   
   //delay(200);
@@ -148,14 +140,31 @@ void setup() {
   
   // Hier werden die Seiten im Server definiert.
   server.on("/settings/", []() {
-    Serial.println("Startup");
 
+    // Konfiguarartion wird hier gespeichert.
+    if(server.hasArg("save_eeprom")){
+      (server.hasArg("wid")) ? strcpy(conman.cfg.wifissid, server.arg("wid").c_str() )  : "";
+      (server.hasArg("wuser")) ? strcpy(conman.cfg.wifiuser, server.arg("wuser").c_str() ) : "";
+      (server.hasArg("wpw")) ? strcpy(conman.cfg.wifipass, server.arg("wpw").c_str() ) : "";
+      (server.hasArg("hostname")) ? strcpy(conman.cfg.wifihost, server.arg("hostname").c_str() ) : "";
+      conman.saveConfig();
+      Serial.println("Konfiguration im EEPROM gespeichert.");
+    } 
+
+    // Konfiguration wird hier gelöscht.
+    if(server.hasArg("del_eeprom")) {
+      conman.deleteConfig();
+      Serial.println("Konfiguration wurde gelöscht.");
+    }
+    
+    Serial.println("Startup");
     String output = XMLBEGIN "<settings>";
-    output += (server.hasArg("wid")) ? "<wid>" + server.arg("wid") + "</wid>":"";
-    output += (server.hasArg("wuser")) ? "<wuser>" + server.arg("wuser") + "</wuser>":"";
-    output += (server.hasArg("wpw")) ? "<wpw>" + server.arg("wpw") + "</wpw>":"";
-    output += (server.hasArg("hostname")) ? "<hostname>" + server.arg("hostname") + "</hostname>" : "";
+    output += "<wid>" + String(conman.cfg.wifissid) + "</wid>";
+    output += "<wuser>" + String(conman.cfg.wifiuser) + "</wuser>";
+    output += "<wpw>" + String(conman.cfg.wifipass) + "</wpw>";
+    output += "<hostname>" + String(conman.cfg.wifihost) + "</hostname>";
     output += "</settings>" XMLEND;
+    
     server.send(200, "text/xml", output);
   });
 
@@ -218,4 +227,4 @@ char* getTemperature(int sensor) {
     
   } 
   return "Error";
-}   
+}

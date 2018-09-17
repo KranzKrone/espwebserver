@@ -8,7 +8,7 @@
 		<meta charset="UTF-8" />
 		<title><xsl:value-of select="//root/head/title" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<!--<link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>-->
+		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/> -->
 		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
@@ -74,7 +74,7 @@
 						<label for="wuser">WiFi User</label>
 					</div>
 					<div class="input-field col s12">
-						<input type="text" name="wpw" class="form-control" value="{//root/settings/wpw}" />
+						<input type="password" name="wpw" class="form-control" value="{//root/settings/wpw}" />
 						<label for="wpw">WiFi Passwort</label>
 					</div>
 					<div class="input-field col s12">
@@ -82,16 +82,26 @@
 						<label for="hostname">Hostname</label>
 					</div>
 					<div class="col s12">
-						<button class="btn waves-effect waves-light right" type="submit"><i class="material-icons left">save</i>speichern</button>
+						<button class="btn waves-effect waves-light right" type="submit" name="save_eeprom" value="save"><i class="material-icons left">save</i>speichern</button>
 					</div>
 				</form>
 				</div>
 			
 			</div>
 			<div class="col l6 m4 s12">
-				<h4>Hinweise</h4>
+				<h5>Hinweise</h5>
 				<p>Wird kein WLAN Passwort eingegeben -> wird trotzdem versucht sich mit dem WLAN zuverbinden. Das WLAN Netzwerk wird als frei angesehen.</p>
 				<p>Ein WiFi User wird zum Beispiel in einem WLAN Netzwerk wie eduroam benötigt.</p> 
+			</div>
+		</div>
+		<div class="row">
+			<div class="col s12">
+				<hr />
+				<h4>Konfiguration löschen</h4>
+				<p>Hier kann die Konfiguration gelöscht werden, im Anschluss muss der ESP8266 neu eingerichtet werden.</p>
+				<form>
+					<button type="submit" name="del_eeprom" class="btn red right" value="delete"><i class="material-icons left">delete</i>Konfiguration löschen</button>
+				</form>
 			</div>
 		</div>
 

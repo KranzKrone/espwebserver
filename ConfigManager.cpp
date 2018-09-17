@@ -2,6 +2,11 @@
 #include <EEPROM.h>
 
 ConfigManager::cfgstruct cfg;
+int ConfigManager::eeSize;
+
+ConfigManager::ConfigManager(int esize){
+  eeSize = esize;
+}
 
 void ConfigManager::saveConfig(){
   EEPROM.begin(4095);

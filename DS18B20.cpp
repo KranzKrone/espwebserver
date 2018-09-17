@@ -1,4 +1,6 @@
 #include "DS18B20.h"
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 DS18B20::DS18B20(int owp)
 : onewireport(owp)
