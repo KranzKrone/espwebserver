@@ -3,7 +3,7 @@
 <root>
 	<head>
 		<title>ESP 8266</title>
-		<esptitle>Steckdose::Kü</esptitle>
+		<esptitle>Steckdose::Küche</esptitle>
 		<msg>Konfiguration gespeichert.</msg>
 	</head>
 	<settings>

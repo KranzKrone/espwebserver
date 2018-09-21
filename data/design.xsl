@@ -14,6 +14,13 @@
 		<style>
 				body {display: flex;min-height: 100vh;flex-direction: column;}
 				main {flex: 1 0 auto;}
+				
+				@media only screen and (max-width: 450px) {
+					#logo-container {font-size: 20px;left: 60%;}
+				}
+				@media (min-width: 995px) and (max-width: 1100px) {
+					#logo-container {font-size: 20px;}
+				}
 		</style>
 	</head>
   
@@ -110,10 +117,10 @@
 				<button class="btn waves-effect waves-light right" type="submit" name="save_eeprom" value="save"><i class="material-icons left">save</i>speichern</button>
 			</div>
 			</form>
-			<div class="col l6 m4 s12">
+			<div class="col s12">
 				<h5>Hinweise</h5>
-				<p>Wird kein WLAN Passwort eingegeben -> wird trotzdem versucht sich mit dem WLAN zuverbinden. Das WLAN Netzwerk wird als frei angesehen.</p>
-				<p>Ein WiFi User wird zum Beispiel in einem WLAN Netzwerk wie eduroam benötigt.</p> 
+				<p>Für eine Verbindung mit einem freiem WLAN wird das Passwort-Feld freigelassen.</p>
+				<p>Ein WiFi-User wird zum Beispiel in einem WLAN Netzwerk wie eduroam benötigt.</p> 
 			</div>
 		</div>
 		<div class="row">
