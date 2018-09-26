@@ -1,3 +1,5 @@
+#include <string>
+
 class WiFiManager
 {
   public:
@@ -6,5 +8,5 @@ class WiFiManager
   	bool connectWiFi();
   	bool createWiFiAP();
   	void reconnectWiFi();
-    void lookUpWiFi();
+    std::string[] lookUpWiFi();
 };

@@ -1,5 +1,3 @@
-//#include <OneWire.h>
-//#include <DallasTemperature.h>
 
 class DS18B20
 {

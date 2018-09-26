@@ -14,7 +14,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 #include "ConfigManager.h"
+#include "WiFiManager.h"
 #include "DS18B20.h"
 
 #define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root><head><title>ESP8266 - Websever</title><esptitle>Steckdose :: Küche</esptitle></head>"
@@ -38,6 +40,7 @@ String range = "0";
 String rms = "0";
 
 ConfigManager conman;
+// WiFiManager wman;
 
 /**
    Das WiFi wird hier gestartet, die Zugangsdaten werden aus dem EEPROM speicher geholt.
@@ -110,6 +113,10 @@ void setup() {
   Serial.begin(115200);
   delay(200);
   Serial.setDebugOutput(true);
+
+  std::string wifilist = wman.lookUpWiFi();
+  Serial.print("WLANs insgesamt:"); 
+  Serial.println(sizeof(wifilist));*/
   
   Serial.println( (!SPIFFS.begin()) ? "SPIFFS Mount failed" : "SPIFFS Mount succesfull");
   Serial.println("Webserver wird gestartet!");
@@ -118,13 +125,7 @@ void setup() {
   conman.loadConfig();
   templib.begin();
   
-  Serial.printf("Die Länge des Strings beträgt: %i\n", sizeof(conman.cfg.wifiuser) / sizeof(*conman.cfg.wifiuser) ); 
-  /*std::string hallo = conman.cfg.wifiuser;
-  Serial.println( (hallo.empty()) ? "Ja" : "Nein" ); */
   startWiFi();
-  
-  //delay(200);
-  Serial.printf("Temperatur der Klasse DS18B20 beträgt %s.\n", sensoren.getDS18B20Celsius(0));
   
   // Statische Dateien wie CSS, JS wird geladen.
   server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=7200");
@@ -202,7 +203,9 @@ void setup() {
 }
 
 void loop() {
+  // Der Server arbeitet hier.
   server.handleClient();
+  // Kleine Pause zum Erhalt der WiFi-Verbindung.
   yield();
   // Hier dreht der Motor
   (drehzahl > 200) ? analogWrite(MOTOR, drehzahl) : analogWrite(MOTOR, 0);
@@ -229,4 +232,17 @@ char* getTemperature(int sensor) {
     
   } 
   return "Error";
+}
+
+void lookUpWiFi(){
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+
+  for (int i = 0; i < WiFi.scanNetworks(); ++i){
+    byte encryption = WiFi.encryptionType(i);
+    String outprint = String(i) + " " + WiFi.SSID(i) + " " + WiFi.RSSI(i);
+    outprint += " Encryption Type: " + String(encryption,HEX);
+    outprint += (encryption == ENC_TYPE_NONE) ? " " : "*";
+    Serial.println(outprint);
+  }
 }
