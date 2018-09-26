@@ -28,6 +28,7 @@
 			  <ul class="right hide-on-med-and-down">
 				<li><a href="/temperatur/">Temperatur</a></li>
 				<li><a href="/vibrator/">Vibrator</a></li>
+				<li><a href="/steckdose/">Steckdose</a></li>
 				<li><a href="/settings/">Einstellungen</a></li>
 				<li><a class="waves-effect waves-light btn" onclick="alert('Button wurde gedrückt.')">Steckdose an / aus</a></li>
 			  </ul>
@@ -40,6 +41,7 @@
 				<li><a href="/">Startseite</a></li>
 				<li><a href="/temperatur/">Temperatur</a></li>
 				<li><a href="/vibrator/">Vibrator</a></li>
+				<li><a href="/steckdose/">Steckdose</a></li>
 				<li><a href="/settings/">Einstellungen</a></li>
 				<li><div class="divider"></div></li>
 				<li><a class="sidenav-close" href="#!"><i class="tiny material-icons left">close</i>Menü schließen</a></li>
@@ -55,6 +57,7 @@
 			<xsl:apply-templates select="settings"/>
 			<xsl:apply-templates select="temperatur"/>
 			<xsl:apply-templates select="vibrator"/>
+			<xsl:apply-templates select="steckdose"/>
 			</div>
 		</main>
 		
@@ -229,5 +232,48 @@
 		</div>
 
 </xsl:template>
+
+<xsl:template match="steckdose">
+  
+		<div class="row">
+			<div class="col s12">
+				<h2>ESP 8266</h2>
+				<p>This is an programming example for ESP8266.</p>
+			</div>
+			
+			<div class="col s12 m6">
+				<div class="card white">
+				<div class="card-content">
+				<span class="card-title">An | Aus</span>
+				<div class="center">
+				<a href="/" onclick="alert('Status der Steckdose wurde geändert.');">
+					<svg version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" x="0px" y="0px" width="177px" height="202px" viewBox="-0.8 0.5 177 202" xml:space="preserve" style="margin: 20px;">
+					<defs></defs>
+					<path fill="none" stroke="#000000" stroke-width="30" stroke-linecap="round" d="M33.7,64.3C22.1,77.2,15,94.3,15,113c0,40.1,32.5,72.7,72.7,72.7c40.1,0,72.7-32.5,72.7-72.7c0-18.7-7.1-35.8-18.7-48.7"/>
+					<line fill="none" stroke="#000000" stroke-width="30" stroke-linecap="round" x1="87.8" y1="15" x2="87.8" y2="113"/>
+					</svg>
+				</a>
+				</div>
+				</div>
+				</div>
+			</div>
+			<div class="col s12 m6">
+				  <div class="card blue-grey darken-1">
+					<div class="card-content white-text">
+					  <span class="card-title">Timer</span>
+					  <p>I am a very simple card. I am good at containing small bits of information.
+					  I am convenient because I require little markup to use effectively.</p>
+					</div>
+					<div class="card-action">
+					  <a href="#" class="waves-effect waves-light btn green">ON</a>
+					  <a href="#" class="waves-effect waves-light btn red right">OFF</a>
+					</div>
+				  </div>
+			</div>
+		</div>
+
+</xsl:template>
+
+
 
 </xsl:stylesheet>
