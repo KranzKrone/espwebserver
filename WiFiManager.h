@@ -8,5 +8,5 @@ class WiFiManager
   	bool connectWiFi();
   	bool createWiFiAP();
   	void reconnectWiFi();
-    std::string[] lookUpWiFi();
+
 };

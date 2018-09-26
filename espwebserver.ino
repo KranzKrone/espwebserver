@@ -58,7 +58,7 @@ void startWiFi() {
 
 
 bool startWiFiSTA() {
-  WiFi.persistent(false);
+  // WiFi.persistent(false);
   WiFi.mode(WIFI_OFF);
   WiFi.mode(WIFI_STA);
   WiFi.hostname(conman.cfg.wifihost);
@@ -113,10 +113,6 @@ void setup() {
   Serial.begin(115200);
   delay(200);
   Serial.setDebugOutput(true);
-
-  std::string wifilist = wman.lookUpWiFi();
-  Serial.print("WLANs insgesamt:"); 
-  Serial.println(sizeof(wifilist));*/
   
   Serial.println( (!SPIFFS.begin()) ? "SPIFFS Mount failed" : "SPIFFS Mount succesfull");
   Serial.println("Webserver wird gestartet!");
@@ -136,6 +132,13 @@ void setup() {
     Serial.println("Startpage");
     String output = XMLBEGIN "<startpage>";
     output += "</startpage>" XMLEND;
+    server.send(200, "text/xml", output);
+  });
+
+  server.on("/steckdose/", []() {
+    Serial.println("Steckdose");
+    String output = XMLBEGIN "<steckdose>";
+    output += "</steckdose>" XMLEND;
     server.send(200, "text/xml", output);
   });
   
