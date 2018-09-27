@@ -236,16 +236,3 @@ char* getTemperature(int sensor) {
   } 
   return "Error";
 }
-
-void lookUpWiFi(){
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
-
-  for (int i = 0; i < WiFi.scanNetworks(); ++i){
-    byte encryption = WiFi.encryptionType(i);
-    String outprint = String(i) + " " + WiFi.SSID(i) + " " + WiFi.RSSI(i);
-    outprint += " Encryption Type: " + String(encryption,HEX);
-    outprint += (encryption == ENC_TYPE_NONE) ? " " : "*";
-    Serial.println(outprint);
-  }
-}
