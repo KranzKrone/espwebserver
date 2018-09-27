@@ -14,10 +14,10 @@
 		<style>
 			body {display: flex;min-height: 100vh;flex-direction: column;}
 			main {flex: 1 0 auto;}
-			@media only screen and (max-width: 300px) {#logo-container {font-size: 12px;}}
-			@media only screen and (max-width: 380px) {#logo-container {font-size: 16px;}}
-			@media only screen and (max-width: 450px) {#logo-container {font-size: 20px;}}
-			@media (min-width: 995px) and (max-width: 1100px) {#logo-container {font-size: 20px;}}
+			@media (min-width: 995px) and (max-width: 1100px) {#logo-container {font-size: 16px;}}
+			@media (max-width: 450px) {#logo-container {font-size: 20px;}}
+			@media (max-width: 380px) {#logo-container {font-size: 16px;}}
+			@media (max-width: 300px) {#logo-container {font-size: 10px;}}
 		</style>
 	</head>
   
@@ -109,7 +109,7 @@
 			<div class="col l6 m6 s12">
 				<h5>Main Settings</h5>
 				<div class="input-field col s12">
-					<input type="text" name="esptitle" class="form-control" value="{//root/settings/esptitle}" maxlength="10" />
+					<input type="text" name="esptitle" class="form-control" value="{//root/settings/esptitle}" maxlength="16" />
 					<label for="esptitle">Main Title</label>
 				</div>
 			</div>
