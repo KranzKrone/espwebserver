@@ -46,7 +46,6 @@ void setup() {
 
   // Die Konfiguration lade ich hier.
   conman.loadConfig();
-  // templib.begin();
   // Hier wird WLan gestartet.
   wman.begin(conman.cfg.wifissid, conman.cfg.wifipass, conman.cfg.wifihost, "ESPDEV", "");
   
@@ -104,8 +103,8 @@ void setup() {
   server.on("/temperatur/", []() {
     Serial.println("Temperatur XML");
     String output = XMLBEGIN "<temperatur>";
-    output += "<aussentemperatur>" + sensoren.getDS18B20Celsius(1) + "</aussentemperatur>";
-    output += "<innentemperatur>" + sensoren.getDS18B20Celsius(0) + "</innentemperatur>";
+    output += "<aussentemperatur>" + sensoren.getDS18B20Celsius(0) + "</aussentemperatur>";
+    output += "<innentemperatur>" + sensoren.getDS18B20Celsius(1) + "</innentemperatur>";
     output += "</temperatur>" XMLEND;
     server.send(200, "text/xml", output);
   });
