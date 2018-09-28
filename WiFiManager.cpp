@@ -9,6 +9,22 @@ String _lokalip = "";
 
 WiFiManager::WiFiManager(){};
 
+bool WiFiManager::begin(String wifissid, String wifipass, String wifihost, String apname, String appass){
+  
+  bool _wifi = WiFiManager::connectWiFi(wifissid, wifipass, wifihost);
+  
+  if(_wifi){
+    String _lip = String(WiFi.localIP());
+    Serial.printf("Verbindung zu Netzwerk %s hergstellt. IP: ", wifissid.c_str(), _lip.c_str());
+    return true;
+  } else {
+    bool _wifiap = WiFiManager::createWiFiAP(apname, appass);
+    Serial.printf("Accespoint gestartet - %s.\n", ((_wifiap) ? "Ja" : "Nein"));
+    return true;
+  }
+  return false;
+}
+
 /**
    Accespointmodus
    Hostname: http://192.168.0.1/

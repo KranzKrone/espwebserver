@@ -7,9 +7,7 @@
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
-#include <ESP8266mDNS.h>
 #include <FS.h>
 #include "ConfigManager.h"
 #include "WiFiManager.h"
@@ -43,7 +41,7 @@ void setup() {
  
   Serial.begin(115200);
   delay(200);
-  Serial.setDebugOutput(true);
+  Serial.setDebugOutput(false);
   
   Serial.println( (!SPIFFS.begin()) ? "SPIFFS Mount failed" : "SPIFFS Mount succesfull");
   Serial.println("Webserver wird gestartet!");
@@ -51,12 +49,8 @@ void setup() {
   // Die Konfiguration lade ich hier.
   conman.loadConfig();
   templib.begin();
-  
-  // startWiFi();
-
-  bool ci = wman.connectWiFi(conman.cfg.wifissid, conman.cfg.wifipass, conman.cfg.wifihost);
-  Serial.printf("Mit dem Internet verbunden? - %s\n", (ci) ? "Ja" : "Nein");
-  (!ci) ? wman.createWiFiAP("ESPDEV", "") : Serial.println("Accespoint konnte nicht gestartet werden.");
+  // Hier wird WLan gestartet.
+  wman.begin(conman.cfg.wifissid, conman.cfg.wifipass, conman.cfg.wifihost, "ESPDEV", "");
   
   // Statische Dateien wie CSS, JS wird geladen.
   server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=7200");

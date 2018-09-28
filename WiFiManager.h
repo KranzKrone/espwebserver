@@ -1,4 +1,3 @@
-// #include <stdlib.h>
 #include <WString.h>
 #include <vector>
 
@@ -13,10 +12,10 @@ class WiFiManager
     
     int reconnectcounter;
     String _lokalip;
+    
     WiFiManager();
-    void getCurrentWiFi();
+    bool begin(String wifissid, String wifipass, String wifihost, String apname, String appass);
     bool connectWiFi(String wifissid, String wifipass, String wifihost);
     bool createWiFiAP(String ap_name, String ap_pass);
-    void reconnectWiFi();
     std::vector<WiFiManager::WiFiData> lookUpWiFi();
 };
