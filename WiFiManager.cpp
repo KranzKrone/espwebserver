@@ -14,8 +14,8 @@ bool WiFiManager::begin(String wifissid, String wifipass, String wifihost, Strin
   bool _wifi = WiFiManager::connectWiFi(wifissid, wifipass, wifihost);
   
   if(_wifi){
-    String _lip = String(WiFi.localIP());
-    Serial.printf("Verbindung zu Netzwerk %s hergstellt. IP: ", wifissid.c_str(), _lip.c_str());
+    Serial.println(WiFi.localIP());
+    Serial.printf("Verbindung zu Netzwerk %s hergstellt.", wifissid.c_str());
     return true;
   } else {
     bool _wifiap = WiFiManager::createWiFiAP(apname, appass);

@@ -6,7 +6,6 @@
  */
 
 #include <OneWire.h>
-#include <DallasTemperature.h>
 #include <ESP8266WebServer.h>
 #include <FS.h>
 #include "ConfigManager.h"
@@ -23,8 +22,7 @@
 ConfigManager conman;
 WiFiManager wman;
 OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature templib(&oneWire);
-DS18B20 sensoren(ONE_WIRE_BUS);
+DS18B20 sensoren(&oneWire);
 ESP8266WebServer server(80);
 
 // Variablen welche direct in der Loop benutzt werden.
@@ -48,7 +46,7 @@ void setup() {
 
   // Die Konfiguration lade ich hier.
   conman.loadConfig();
-  templib.begin();
+  // templib.begin();
   // Hier wird WLan gestartet.
   wman.begin(conman.cfg.wifissid, conman.cfg.wifipass, conman.cfg.wifihost, "ESPDEV", "");
   
@@ -106,8 +104,8 @@ void setup() {
   server.on("/temperatur/", []() {
     Serial.println("Temperatur XML");
     String output = XMLBEGIN "<temperatur>";
-    output += "<aussentemperatur>" + String(getTemperature(0)) + "</aussentemperatur>";
-    output += "<innentemperatur>" + String(getTemperature(1)) + "</innentemperatur>";
+    output += "<aussentemperatur>" + sensoren.getDS18B20Celsius(1) + "</aussentemperatur>";
+    output += "<innentemperatur>" + sensoren.getDS18B20Celsius(0) + "</innentemperatur>";
     output += "</temperatur>" XMLEND;
     server.send(200, "text/xml", output);
   });
@@ -143,25 +141,4 @@ void loop() {
   (drehzahl > 200) ? analogWrite(MOTOR, drehzahl) : analogWrite(MOTOR, 0);
   // Kleine Pause zum Erhalt der WiFi-Verbindung.
   yield();
-}
-
-char* getTemperature(int sensor) {
-  
-  int dscounter = templib.getDS18Count();
-  
-  if(dscounter > 0 && sensor < dscounter){
-    
-    yield();
-    templib.requestTemperatures();
-    float tempC = templib.getTempCByIndex(sensor);
-    yield();
-    
-    if(tempC > -127){
-      char* test = "Test";
-      dtostrf(tempC, 2, 1, test);
-      return test;
-    }
-    
-  } 
-  return "Error";
 }
