@@ -26,7 +26,7 @@ OneWire oneWire(ONE_WIRE_BUS);
 DS18B20 sensoren(&oneWire);
 ESP8266WebServer server(80);
 // Im Programm speichere ich die Veriablen für die Bewegungen und andere Dinge
-Programm programm(&conman);
+Programm programm(&conman, &sensoren);
 
 /**
  * DE: Initialisierung des Programms
@@ -128,6 +128,7 @@ void setup() {
   yield();
   Serial.println(programm.pdrehzahl);
   Serial.println(programm.pconfigmanager->cfg.esptitle);
+  Serial.println(programm.pds18b20->getDS18B20Celsius(0));
 }
 
 void loop() {
