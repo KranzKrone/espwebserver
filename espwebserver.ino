@@ -11,6 +11,7 @@
 #include "ConfigManager.h"
 #include "WiFiManager.h"
 #include "DS18B20.h"
+#include "Programm.h"
 
 #define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root><head><title>ESP8266 - Websever</title><esptitle>Steckdose :: Küche</esptitle></head>"
 #define XMLEND "</root>"
@@ -24,13 +25,14 @@ WiFiManager wman;
 OneWire oneWire(ONE_WIRE_BUS);
 DS18B20 sensoren(&oneWire);
 ESP8266WebServer server(80);
-
-// Variablen welche direct in der Loop benutzt werden.
+Programm programm;
+// Variablen welche direct in der Loop benutzt werden
+/*
 int drehzahl = 0;
 int delayms = 0;
 String range = "0";
 String rms = "0";
-
+*/
 
 /**
    Programm startet hier.
@@ -111,13 +113,13 @@ void setup() {
   
   server.on("/vibrator/", []() {
     
-    range = (server.hasArg("range")) ? server.arg("range") : range;
-    drehzahl = range.toInt() * 10;
+    programm.prange = (server.hasArg("range")) ? server.arg("range") : programm.prange;
+    programm.pdrehzahl = programm.prange.toInt() * 10;
     
-    rms = (server.hasArg("rms")) ? server.arg("rms") : rms;
-    delayms = rms.toInt() * 300;
+    programm.prms = (server.hasArg("rms")) ? server.arg("rms") : programm.prms;
+    programm.pdelayms = programm.prms.toInt() * 300;
     
-    String output = XMLBEGIN "<vibrator><range>" + range + "</range><rms>" + rms + "</rms></vibrator>" XMLEND;
+    String output = XMLBEGIN "<vibrator><range>" + programm.prange + "</range><rms>" + programm.prms + "</rms></vibrator>" XMLEND;
     server.send(200, "text/xml", output);
     yield();
   });
@@ -129,6 +131,7 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
   yield();
+  Serial.println(programm.pdrehzahl);
 }
 
 void loop() {
@@ -137,7 +140,7 @@ void loop() {
   // Kleine Pause zum Erhalt der WiFi-Verbindung.
   yield();
   // Hier dreht der Motor
-  (drehzahl > 200) ? analogWrite(MOTOR, drehzahl) : analogWrite(MOTOR, 0);
+  (programm.pdrehzahl > 200) ? analogWrite(MOTOR, programm.pdrehzahl) : analogWrite(MOTOR, 0);
   // Kleine Pause zum Erhalt der WiFi-Verbindung.
   yield();
 }

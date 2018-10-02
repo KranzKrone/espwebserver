@@ -73,8 +73,13 @@
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="materialize.min.js"></script>
 		<script type="text/javascript" src="/materialize.min.js"></script>
-		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>
-
+		<!-- <script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>-->
+		<script type="text/javascript">
+			document.addEventListener('DOMContentLoaded', function() {
+				var elems = document.querySelectorAll('.sidenav');
+				var instances = M.Sidenav.init(elems, options);
+			});
+		</script>
 	</body>
 </html>
 </xsl:template> 
