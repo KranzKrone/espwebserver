@@ -1,3 +1,6 @@
+#ifndef WifiManager_h
+#define WifiManager_h
+
 #include <WString.h>
 #include <vector>
 
@@ -19,3 +22,5 @@ class WiFiManager
     bool createWiFiAP(String ap_name, String ap_pass);
     std::vector<WiFiManager::WiFiData> lookUpWiFi();
 };
+
+#endif

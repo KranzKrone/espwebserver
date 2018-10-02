@@ -1,3 +1,6 @@
+#ifndef ConfigManager_h
+#define ConfigManager_h
+
 #include <EEPROM.h>
 #include <stdlib.h>
 
@@ -26,4 +29,5 @@ class ConfigManager {
     // löschen des Speicher
     void deleteConfig();
 };
-  
+
+#endif  
