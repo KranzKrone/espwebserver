@@ -11,6 +11,7 @@
 #include "ConfigManager.h"
 #include "WiFiManager.h"
 #include "DS18B20.h"
+#include "ServerManager.h"
 #include "Programm.h"
 
 #define XMLBEGIN "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet type=\"text/xsl\" href=\"/design.xsl\"?><root><head><title>ESP8266 - Websever</title><esptitle>Steckdose :: Küche</esptitle></head>"
@@ -27,6 +28,7 @@ DS18B20 sensoren(&oneWire);
 ESP8266WebServer server(80);
 // Im Programm speichere ich die Veriablen für die Bewegungen und andere Dinge
 Programm programm(&conman, &sensoren);
+ServerManager servers(&programm);
 
 /**
  * DE: Initialisierung des Programms
@@ -45,7 +47,7 @@ void setup() {
   conman.loadConfig();
   // Hier wird WLan gestartet.
   wman.begin(conman.cfg.wifissid, conman.cfg.wifipass, conman.cfg.wifihost, "ESPDEV", "");
-  
+  /*
   // Statische Dateien wie CSS, JS wird geladen.
   server.serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=7200");
   server.serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js", "max-age=7200");
@@ -123,7 +125,7 @@ void setup() {
     server.send(404, "text/html", "404: Not Found");
   });
 
-  server.begin();
+  server.begin();*/
   Serial.println("HTTP server started");
   yield();
   Serial.println(programm.pdrehzahl);
@@ -134,6 +136,8 @@ void setup() {
 void loop() {
   // Der Server arbeitet hier.
   server.handleClient();
+  yield();
+  servers.serverLoop();
   // Kleine Pause zum Erhalt der WiFi-Verbindung.
   yield();
   // Hier dreht der Motor
