@@ -25,18 +25,13 @@ WiFiManager wman;
 OneWire oneWire(ONE_WIRE_BUS);
 DS18B20 sensoren(&oneWire);
 ESP8266WebServer server(80);
-Programm programm;
-// Variablen welche direct in der Loop benutzt werden
-/*
-int drehzahl = 0;
-int delayms = 0;
-String range = "0";
-String rms = "0";
-*/
+// Im Programm speichere ich die Veriablen für die Bewegungen und andere Dinge
+Programm programm(&conman);
 
 /**
-   Programm startet hier.
-*/
+ * DE: Initialisierung des Programms
+ * EN: Programm is init here
+ */
 void setup() {
  
   Serial.begin(115200);
@@ -132,6 +127,7 @@ void setup() {
   Serial.println("HTTP server started");
   yield();
   Serial.println(programm.pdrehzahl);
+  Serial.println(programm.pconfigmanager->cfg.esptitle);
 }
 
 void loop() {
