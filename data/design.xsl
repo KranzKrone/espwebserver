@@ -8,14 +8,14 @@
 		<meta charset="UTF-8" />
 		<title><xsl:value-of select="//root/head/esptitle" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>
+		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>-->
 		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<style>
 			body {display: flex;min-height: 100vh;flex-direction: column;}
 			main {flex: 1 0 auto;}
 			@media (min-width: 995px) and (max-width: 1100px) {#logo-container {font-size: 16px;}}
-			@media (max-width: 450px) {#logo-container {font-size: 20px;}}
+			@media (max-width: 500px) {#logo-container {font-size: 20px;}}
 			@media (max-width: 380px) {#logo-container {font-size: 16px;}}
 			@media (max-width: 300px) {#logo-container {font-size: 10px;}}
 		</style>
@@ -70,16 +70,10 @@
 		</div>
 		</footer>
 		
-		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="materialize.min.js"></script>
+		<!-- <script type="text/javascript" src="materialize.min.js"></script> -->
+		<script type="text/javascript" src="/jquery.js"></script>
 		<script type="text/javascript" src="/materialize.min.js"></script>
-		<!-- <script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>-->
-		<script type="text/javascript">
-			document.addEventListener('DOMContentLoaded', function() {
-				var elems = document.querySelectorAll('.sidenav');
-				var instances = M.Sidenav.init(elems, options);
-			});
-		</script>
+		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>
 	</body>
 </html>
 </xsl:template> 

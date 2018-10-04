@@ -9,6 +9,9 @@ Use Arduino (>= 1.8.6) with [FileSystem](http://esp8266.github.io/Arduino/versio
 
 ##### Use from another #####
 
+JQuery from jQuery Foundation, Inc.  
+https://github.com/jquery/jquery  
+  
 Materialize from Dogfalo  
 https://github.com/Dogfalo/materialize  
   
