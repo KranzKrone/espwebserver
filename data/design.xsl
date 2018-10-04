@@ -58,6 +58,7 @@
 			<xsl:apply-templates select="temperatur"/>
 			<xsl:apply-templates select="vibrator"/>
 			<xsl:apply-templates select="steckdose"/>
+			<xsl:apply-templates select="err"/>
 			</div>
 		</main>
 		
@@ -268,6 +269,18 @@
 					  <a href="#" class="waves-effect waves-light btn red right">OFF</a>
 					</div>
 				  </div>
+			</div>
+		</div>
+
+</xsl:template>
+
+<xsl:template match="err">
+  
+		<div class="row">
+			<div class="col s12">
+				<h2>404</h2>
+				<p>404: Page or content not found.</p>
+				<a href="/">Hauptseite (Startseite)</a>
 			</div>
 		</div>
 
