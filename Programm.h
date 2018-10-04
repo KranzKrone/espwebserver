@@ -9,10 +9,10 @@ class Programm {
 
   public:
   
-    int pdrehzahl;
-    int pdelayms;
-    String prange;
-    String prms;
+    int pdrehzahl = 0;
+    int pdelayms = 0;
+    String prange = "0";
+    String prms = "0";
 
     ConfigManager* pconfigmanager;
     DS18B20* pds18b20;

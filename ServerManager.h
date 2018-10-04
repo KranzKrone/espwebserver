@@ -18,7 +18,7 @@ class ServerManager {
       String so_title = "ESP8266 Webserver";
       String so_msg = "";
       String so_content = "<startpage />";
-    } ;
+    };
     
     Programm* programm;
     

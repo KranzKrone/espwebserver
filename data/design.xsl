@@ -34,7 +34,7 @@
 			  </ul>
 
 			  <ul id="nav-mobile" class="sidenav">
-				<li><a class="waves-effect waves-light btn sidenav-close" onclick="console.log('Button Seitenmenü gedrückt.')">Steckdose an / aus</a></li>
+				<li><a class="waves-effect waves-light btn sidenav-close" onclick="">Steckdose an / aus</a></li>
 				<li><div class="divider"></div></li>
 				<li><a href="#!"><i class="tiny material-icons left">info</i>Temperatur: 20,0 °C</a></li>
 				<li><div class="divider"></div></li>
@@ -71,7 +71,8 @@
 		</div>
 		</footer>
 		
-		<!-- <script type="text/javascript" src="materialize.min.js"></script> -->
+		<!--<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="materialize.min.js"></script> -->
 		<script type="text/javascript" src="/jquery.js"></script>
 		<script type="text/javascript" src="/materialize.min.js"></script>
 		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>
@@ -143,19 +144,20 @@
 			<div class="input-field col s12">
 				<p class="range-field">
 					<label for="range">Umdrehungen</label>
-					<input type="range" name="range" id="range" min="0" max="100" value="{//root/vibrator/range}" />
+					<input type="range" class="range" name="range" id="range" min="0" max="100" value="{//root/vibrator/range}" />
 				</p>
 			</div>
 			<div class="input-field col s12">
 				<p class="range-field">
 					<label for="rms">Pausen</label>
-					<input type="range" name="rms" id="rms" min="0" max="100" value="{//root/vibrator/rms}" />
+					<input type="range" class="range" name="rms" id="rms" min="0" max="100" value="{//root/vibrator/rms}" />
 				</p>
 			</div>
 			<div class="col s12">
 				<button class="btn waves-effect waves-light right" type="submit"><i class="material-icons left">save</i>setzen</button>
 			</div>
 		</form>
+		
 	</div>
 
 </xsl:template>
