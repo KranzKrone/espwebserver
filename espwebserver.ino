@@ -43,9 +43,6 @@ void setup() {
 
   Serial.println("HTTP server started");
   yield();
-  Serial.println(programm.pdrehzahl);
-  Serial.println(programm.pconfigmanager->cfg.esptitle);
-  Serial.println(programm.pds18b20->getDS18B20Celsius(0));
 }
 
 void loop() {

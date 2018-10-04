@@ -6,7 +6,5 @@
 		<esptitle>Steckdose::Küche</esptitle>
 		<msg>Konfiguration gespeichert.</msg>
 	</head>
-	<steckdose>
-		
-	</steckdose>
+	<err />
 </root>

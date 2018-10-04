@@ -8,14 +8,14 @@
 		<meta charset="UTF-8" />
 		<title><xsl:value-of select="//root/head/esptitle" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>
+		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>-->
 		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<style>
 			body {display: flex;min-height: 100vh;flex-direction: column;}
 			main {flex: 1 0 auto;}
 			@media (min-width: 995px) and (max-width: 1100px) {#logo-container {font-size: 16px;}}
-			@media (max-width: 450px) {#logo-container {font-size: 20px;}}
+			@media (max-width: 500px) {#logo-container {font-size: 20px;}}
 			@media (max-width: 380px) {#logo-container {font-size: 16px;}}
 			@media (max-width: 300px) {#logo-container {font-size: 10px;}}
 		</style>
@@ -34,7 +34,7 @@
 			  </ul>
 
 			  <ul id="nav-mobile" class="sidenav">
-				<li><a class="waves-effect waves-light btn sidenav-close" onclick="console.log('Button Seitenmenü gedrückt.')">Steckdose an / aus</a></li>
+				<li><a class="waves-effect waves-light btn sidenav-close" onclick="">Steckdose an / aus</a></li>
 				<li><div class="divider"></div></li>
 				<li><a href="#!"><i class="tiny material-icons left">info</i>Temperatur: 20,0 °C</a></li>
 				<li><div class="divider"></div></li>
@@ -58,6 +58,7 @@
 			<xsl:apply-templates select="temperatur"/>
 			<xsl:apply-templates select="vibrator"/>
 			<xsl:apply-templates select="steckdose"/>
+			<xsl:apply-templates select="err"/>
 			</div>
 		</main>
 		
@@ -70,16 +71,11 @@
 		</div>
 		</footer>
 		
-		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="materialize.min.js"></script>
+		<!--<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="materialize.min.js"></script> -->
+		<script type="text/javascript" src="/jquery.js"></script>
 		<script type="text/javascript" src="/materialize.min.js"></script>
-		<!-- <script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>-->
-		<script type="text/javascript">
-			document.addEventListener('DOMContentLoaded', function() {
-				var elems = document.querySelectorAll('.sidenav');
-				var instances = M.Sidenav.init(elems, options);
-			});
-		</script>
+		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>
 	</body>
 </html>
 </xsl:template> 
@@ -148,19 +144,20 @@
 			<div class="input-field col s12">
 				<p class="range-field">
 					<label for="range">Umdrehungen</label>
-					<input type="range" name="range" id="range" min="0" max="100" value="{//root/vibrator/range}" />
+					<input type="range" class="range" name="range" id="range" min="0" max="100" value="{//root/vibrator/range}" />
 				</p>
 			</div>
 			<div class="input-field col s12">
 				<p class="range-field">
 					<label for="rms">Pausen</label>
-					<input type="range" name="rms" id="rms" min="0" max="100" value="{//root/vibrator/rms}" />
+					<input type="range" class="range" name="rms" id="rms" min="0" max="100" value="{//root/vibrator/rms}" />
 				</p>
 			</div>
 			<div class="col s12">
 				<button class="btn waves-effect waves-light right" type="submit"><i class="material-icons left">save</i>setzen</button>
 			</div>
 		</form>
+		
 	</div>
 
 </xsl:template>
@@ -274,6 +271,18 @@
 					  <a href="#" class="waves-effect waves-light btn red right">OFF</a>
 					</div>
 				  </div>
+			</div>
+		</div>
+
+</xsl:template>
+
+<xsl:template match="err">
+  
+		<div class="row">
+			<div class="col s12">
+				<h2>404</h2>
+				<p>404: Page or content not found.</p>
+				<a href="/">Hauptseite (Startseite)</a>
 			</div>
 		</div>
 
