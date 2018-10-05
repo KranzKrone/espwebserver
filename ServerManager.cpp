@@ -24,6 +24,13 @@ ServerManager::ServerManager(Programm*_programm){
 
   server->on("/steckdose/", [=]() {
     Serial.println("Steckdose");
+    // Ändern der Steckdose
+    
+    if(server->hasArg("s20")){
+      Serial.println("s20 wurde gesetzt");
+      programm->s20_switch();
+    }
+    
     ServerOutput so;
     so.so_content = "<steckdose />" ;
     sendServer(so);
@@ -52,8 +59,7 @@ ServerManager::ServerManager(Programm*_programm){
       programm->pconfigmanager->deleteConfig();
       Serial.println("Konfiguration wurde gelöscht.");
     }
-    
-    Serial.println("Startup");
+ 
     String output =  "<settings>";
     output += "<wid>" + String(programm->pconfigmanager->cfg.wifissid) + "</wid>";
     output += "<wuser>" + String(programm->pconfigmanager->cfg.wifiuser) + "</wuser>";

@@ -5,6 +5,7 @@
 Use Arduino (>= 1.8.6) with [FileSystem](http://esp8266.github.io/Arduino/versions/2.0.0/doc/filesystem.html "FileSystem")
 
 1. Upload the data foulder with ESP8266 Sketch Data Upload
+   Important: close the "Serieller Monitor" window before.
 2. Upload the Sketch - espwebserver.ino 
 
 ##### Use from another #####

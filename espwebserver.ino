@@ -42,6 +42,7 @@ void setup() {
   wman.begin(conman.cfg.wifissid, conman.cfg.wifipass, conman.cfg.wifihost, "ESPDEV", "");
 
   Serial.println("HTTP server started");
+  programm.startup();
   yield();
 }
 
