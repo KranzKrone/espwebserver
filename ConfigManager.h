@@ -14,7 +14,7 @@ class ConfigManager {
       char wifiuser[36];
       char wifipass[64];
       char wifihost[24];
-      char esptitle[10]; 
+      char esptitle[18] = "ESP8266";
     };
 
     // Config DBO

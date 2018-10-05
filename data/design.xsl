@@ -8,7 +8,7 @@
 		<meta charset="UTF-8" />
 		<title><xsl:value-of select="//root/head/esptitle" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>-->
+		<link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>
 		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<style>
@@ -73,8 +73,8 @@
 		</div>
 		</footer>
 		
-		<!--<script type="text/javascript" src="jquery.js"></script>
-		<script type="text/javascript" src="materialize.min.js"></script> -->
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="materialize.min.js"></script> 
 		<script type="text/javascript" src="/jquery.js"></script>
 		<script type="text/javascript" src="/materialize.min.js"></script>
 		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>

@@ -33,7 +33,8 @@ ServerManager::ServerManager(Programm*_programm){
   server->on("/settings/", [=]() {
 
     ServerOutput so;
-    
+
+    // TODO: Variablen abfangen!!
     // Konfiguarartion wird hier gespeichert.
     if(server->hasArg("save_eeprom")){
       (server->hasArg("wid")) ? strcpy(programm->pconfigmanager->cfg.wifissid, server->arg("wid").c_str() )  : 0;
@@ -43,6 +44,7 @@ ServerManager::ServerManager(Programm*_programm){
       (server->hasArg("esptitle")) ? strcpy(programm->pconfigmanager->cfg.esptitle, server->arg("esptitle").c_str() ) : 0;
       programm->pconfigmanager->saveConfig();
       Serial.println("Konfiguration im EEPROM gespeichert.");
+      so.so_msg = "Konfiguration gespeichert";
     } 
 
     // Konfiguration wird hier gelöscht.
@@ -101,6 +103,7 @@ void ServerManager::sendServer(ServerManager::ServerOutput _so){
   String oc = XMLHEADER "<root><head>";
   // Globale Inhalte für den Head-Bereich - global part for Headbereich
   oc += "<esptitle>" + String(this->programm->pconfigmanager->cfg.esptitle) + "</esptitle>";
+  oc += (_so.so_msg.length() != 0) ? "<msg>" + _so.so_msg + "</msg>" : "";
   oc += "</head>" + _so.so_content + "</root>";
   this->server->send(_so.so_code, _so.so_type, oc);
   yield();
