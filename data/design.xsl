@@ -8,7 +8,6 @@
 		<meta charset="UTF-8" />
 		<title><xsl:value-of select="//root/head/esptitle" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<!-- <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>-->
 		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<style>
@@ -51,6 +50,8 @@
 		</nav>
 		</header>
 		
+		<xsl:apply-templates select="//root/head/msg"/>
+		
 		<main>
 			<div class="container">
 			<xsl:apply-templates select="startpage"/>
@@ -71,11 +72,19 @@
 		</div>
 		</footer>
 		
+
+		<!-- <script type="text/javascript" src="/jquery.js"></script> -->
+		<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
 		<!--<script type="text/javascript" src="jquery.js"></script>
 		<script type="text/javascript" src="materialize.min.js"></script> -->
 		<script type="text/javascript" src="/jquery.js"></script>
 		<script type="text/javascript" src="/materialize.min.js"></script>
-		<script type="text/javascript">(function($){$(function(){$('.sidenav').sidenav();});})(jQuery);</script>
+		<script type="text/javascript">
+			document.addEventListener('DOMContentLoaded', function() {
+				var elems = document.querySelectorAll('.sidenav');
+				var instances = M.Sidenav.init(elems, options);
+			});
+		</script>
 	</body>
 </html>
 </xsl:template> 
@@ -248,7 +257,7 @@
 				<div class="card-content">
 				<span class="card-title">An | Aus</span>
 				<div class="center">
-				<a href="/" onclick="alert('Status der Steckdose wurde geändert.');">
+				<a href="?s20=s20">
 					<svg version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" x="0px" y="0px" width="177px" height="202px" viewBox="-0.8 0.5 177 202" xml:space="preserve" style="margin: 20px;">
 					<defs></defs>
 					<path fill="none" stroke="#000000" stroke-width="30" stroke-linecap="round" d="M33.7,64.3C22.1,77.2,15,94.3,15,113c0,40.1,32.5,72.7,72.7,72.7c40.1,0,72.7-32.5,72.7-72.7c0-18.7-7.1-35.8-18.7-48.7"/>
@@ -288,6 +297,22 @@
 
 </xsl:template>
 
-
+<xsl:template match="//root/head/msg">
+	<div class="container" id="msgcon">
+		<div class="row" style="margin-top: 20px;">
+			<div class="col s12 m12 l12">
+			  <div class="card blue-grey">
+				<div class="card-content white-text">
+				  <span class="card-title">Statusmeldung</span>
+				  <p><xsl:value-of select="//root/head/msg"/></p>
+				</div>
+				<div class="card-action right-align">
+					<a href="#" class="btn" onclick="$('#msgcon').remove();">Ok, gesehen.</a>
+				</div>
+			  </div>
+			</div>
+		</div>	
+	</div>
+</xsl:template>
 
 </xsl:stylesheet>

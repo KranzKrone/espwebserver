@@ -29,3 +29,17 @@ void ConfigManager::deleteConfig(){
   }
   EEPROM.end();
 }
+
+bool ConfigManager::firstData(){
+  int n = sizeof(cfg.ver) / sizeof(cfg.ver[0]);
+  if(n == 0) {
+    strcpy(cfg.ver, "V01");
+    strcpy(cfg.wifissid, "");
+    strcpy(cfg.wifiuser, "");
+    strcpy(cfg.wifipass, "");
+    strcpy(cfg.wifihost, "");
+    strcpy(cfg.esptitle, "ESP8266");
+    return true;
+  }
+  return false;
+}
