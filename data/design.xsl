@@ -50,8 +50,6 @@
 		</nav>
 		</header>
 		
-		<xsl:apply-templates select="//root/head/msg"/>
-		
 		<main>
 			<div class="container">
 			<xsl:apply-templates select="startpage"/>
@@ -297,22 +295,6 @@
 
 </xsl:template>
 
-<xsl:template match="//root/head/msg">
-	<div class="container" id="msgcon">
-		<div class="row" style="margin-top: 20px;">
-			<div class="col s12 m12 l12">
-			  <div class="card blue-grey">
-				<div class="card-content white-text">
-				  <span class="card-title">Statusmeldung</span>
-				  <p><xsl:value-of select="//root/head/msg"/></p>
-				</div>
-				<div class="card-action right-align">
-					<a href="#" class="btn" onclick="$('#msgcon').remove();">Ok, gesehen.</a>
-				</div>
-			  </div>
-			</div>
-		</div>	
-	</div>
-</xsl:template>
+
 
 </xsl:stylesheet>
