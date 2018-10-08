@@ -38,6 +38,9 @@ void setup() {
 
   // Die Konfiguration lade ich hier.
   conman.loadConfig();
+  // if conman empty load data, better for work with them.
+  Serial.printf("Sind keine Daten im Speicher ? - %s\n", (conman.firstData()) ? "Ja":"Nein"); 
+  
   // Hier wird WLan gestartet.
   wman.begin(conman.cfg.wifissid, conman.cfg.wifipass, conman.cfg.wifihost, "ESPDEV", "");
 
