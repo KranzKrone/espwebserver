@@ -4,7 +4,7 @@
 	<head>
 		<title>ESP 8266</title>
 		<esptitle>Steckdose::Küche</esptitle>
-		<msg>Konfiguration gespeichert.</msg>
+		<!-- <msg>Konfiguration gespeichert.</msg>-->
 	</head>
 	<settings />
 </root>

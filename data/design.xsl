@@ -72,8 +72,12 @@
 		</div>
 		</footer>
 		
+
 		<!-- <script type="text/javascript" src="/jquery.js"></script> -->
 		<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+		<!--<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="materialize.min.js"></script> -->
+		<script type="text/javascript" src="/jquery.js"></script>
 		<script type="text/javascript" src="/materialize.min.js"></script>
 		<script type="text/javascript">
 			document.addEventListener('DOMContentLoaded', function() {

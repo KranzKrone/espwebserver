@@ -11,6 +11,7 @@ ConfigManager::ConfigManager(int esize){
 void ConfigManager::saveConfig(){
   EEPROM.begin(4095);
   EEPROM.put(0, cfg);
+  // delay(200);
   EEPROM.commit();
   EEPROM.end();
 }
