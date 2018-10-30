@@ -11,7 +11,6 @@ ServerManager::ServerManager(Programm*_programm){
   
   server->serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=7200");
   server->serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js", "max-age=7200");
-  server->serveStatic("/jquery.js", SPIFFS, "/jquery.js", "max-age=7200");
   server->serveStatic("/design.xsl", SPIFFS, "/design.xsl", "max-age=7200");
 
   // Hier werden die einzelnen Serverfunktionen hinzugefügt.

@@ -35,6 +35,7 @@ void setup() {
   Serial.begin(115200);
   delay(200);
   Serial.setDebugOutput(false);
+  Serial.println("Programm wird gestartet.");
 
   // Die Konfiguration lade ich hier.
   conman.loadConfig();

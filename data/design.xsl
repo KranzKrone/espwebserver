@@ -6,10 +6,11 @@
   
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title><xsl:value-of select="//root/head/esptitle" /></title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-		<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link type="text/css" rel="stylesheet" href="/materialize.min.css" />
+		
 		<style>
 			body {display: flex;min-height: 100vh;flex-direction: column;}
 			main {flex: 1 0 auto;}
@@ -29,11 +30,11 @@
 				<li><a href="/vibrator/">Vibrator</a></li>
 				<li><a href="/steckdose/">Steckdose</a></li>
 				<li><a href="/settings/">Einstellungen</a></li>
-				<li><a class="waves-effect waves-light btn" onclick="alert('Button wurde gedrückt.')">Steckdose an / aus</a></li>
+				<li><a class="waves-effect waves-light btn" onclick="UserAction()">Steckdose an / aus</a></li>
 			  </ul>
 
 			  <ul id="nav-mobile" class="sidenav">
-				<li><a class="waves-effect waves-light btn sidenav-close" onclick="">Steckdose an / aus</a></li>
+				<li><a class="waves-effect waves-light btn sidenav-close" onclick="UserAction()">Steckdose an / aus</a></li>
 				<li><div class="divider"></div></li>
 				<li><a href="#!"><i class="tiny material-icons left">info</i>Temperatur: 20,0 °C</a></li>
 				<li><div class="divider"></div></li>
@@ -70,18 +71,19 @@
 		</div>
 		</footer>
 		
-
-		<!-- <script type="text/javascript" src="/jquery.js"></script> -->
-		<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
-		<!--<script type="text/javascript" src="jquery.js"></script>
-		<script type="text/javascript" src="materialize.min.js"></script> -->
-		<script type="text/javascript" src="/jquery.js"></script>
 		<script type="text/javascript" src="/materialize.min.js"></script>
 		<script type="text/javascript">
+			M.AutoInit();
 			document.addEventListener('DOMContentLoaded', function() {
 				var elems = document.querySelectorAll('.sidenav');
 				var instances = M.Sidenav.init(elems, options);
 			});
+			function UserAction() {
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("GET", "/steckdose/?s20=s20", true);
+				xhttp.send();
+				console.log("Lichtschalter wurde gedrückt.");
+			}
 		</script>
 	</body>
 </html>
@@ -255,13 +257,13 @@
 				<div class="card-content">
 				<span class="card-title">An | Aus</span>
 				<div class="center">
-				<a href="?s20=s20">
+				<span onclick="UserAction()">
 					<svg version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" x="0px" y="0px" width="177px" height="202px" viewBox="-0.8 0.5 177 202" xml:space="preserve" style="margin: 20px;">
 					<defs></defs>
 					<path fill="none" stroke="#000000" stroke-width="30" stroke-linecap="round" d="M33.7,64.3C22.1,77.2,15,94.3,15,113c0,40.1,32.5,72.7,72.7,72.7c40.1,0,72.7-32.5,72.7-72.7c0-18.7-7.1-35.8-18.7-48.7"/>
 					<line fill="none" stroke="#000000" stroke-width="30" stroke-linecap="round" x1="87.8" y1="15" x2="87.8" y2="113"/>
 					</svg>
-				</a>
+				</span>
 				</div>
 				</div>
 				</div>
