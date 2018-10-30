@@ -11,7 +11,6 @@ ServerManager::ServerManager(Programm*_programm){
   
   server->serveStatic("/materialize.min.css", SPIFFS, "/materialize.min.css", "max-age=7200");
   server->serveStatic("/materialize.min.js", SPIFFS, "/materialize.min.js", "max-age=7200");
-  server->serveStatic("/jquery.js", SPIFFS, "/jquery.js", "max-age=7200");
   server->serveStatic("/design.xsl", SPIFFS, "/design.xsl", "max-age=7200");
 
   // Hier werden die einzelnen Serverfunktionen hinzugefügt.
@@ -24,6 +23,13 @@ ServerManager::ServerManager(Programm*_programm){
 
   server->on("/steckdose/", [=]() {
     Serial.println("Steckdose");
+    // Ändern der Steckdose
+    
+    if(server->hasArg("s20")){
+      Serial.println("s20 wurde gesetzt");
+      programm->s20_switch();
+    }
+    
     ServerOutput so;
     so.so_content = "<steckdose />" ;
     sendServer(so);
@@ -50,8 +56,7 @@ ServerManager::ServerManager(Programm*_programm){
       programm->pconfigmanager->deleteConfig();
       Serial.println("Konfiguration wurde gelöscht.");
     }
-    
-    Serial.println("Startup");
+ 
     String output =  "<settings>";
     output += "<wid>" + String(programm->pconfigmanager->cfg.wifissid) + "</wid>";
     output += "<wuser>" + String(programm->pconfigmanager->cfg.wifiuser) + "</wuser>";

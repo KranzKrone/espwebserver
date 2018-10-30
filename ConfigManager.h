@@ -2,7 +2,7 @@
 #define ConfigManager_h
 
 #include <EEPROM.h>
-#include <stdlib.h>
+// #include <stdlib.h>
 
 class ConfigManager {
 
@@ -10,11 +10,12 @@ class ConfigManager {
     // The dataobject to save data
     struct cfgstruct
     {
+      char ver[3];
       char wifissid[32];
       char wifiuser[36];
       char wifipass[64];
       char wifihost[24];
-      char esptitle[10]; 
+      char esptitle[18];
     };
 
     // Config DBO
@@ -28,6 +29,8 @@ class ConfigManager {
     void saveConfig();
     // löschen des Speicher
     void deleteConfig();
+    // setzen wenn der Speicher null
+    bool firstData(); 
 };
 
 #endif  
