@@ -123,6 +123,17 @@
 					<label for="esptitle">Main Title</label>
 				</div>
 			</div>
+			<div class="col l6 m6 s12">
+				<h5>MQTT Settings</h5>
+				<div class="input-field col s12">
+					<input type="text" name="mqtt_broker" class="form-control" value="{//root/settings/esptitle}" maxlength="16" />
+					<label for="mqtt_broker">MQTT Broker</label>
+				</div>
+				<div class="input-field col s12">
+					<input type="text" name="mqtt_topic" class="form-control" value="{//root/settings/esptitle}" maxlength="16" />
+					<label for="mqtt_topic">MQTT Topic</label>
+				</div>
+			</div>
 			<div class="col s12">
 				<button class="btn waves-effect waves-light right" type="submit" name="save_eeprom" value="save"><i class="material-icons left">save</i>speichern</button>
 			</div>
