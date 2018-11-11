@@ -38,9 +38,12 @@ bool ConfigManager::firstData(){
   Serial.println(cfg.versio);
   
   if(cfg.versio != SVERSION) {
+    /*
+     * Braucht man nicht wirklich.
     Serial.println("Speicher: wird gelöscht.");
     this->deleteConfig();
     Serial.println("Speicher: wurde gelöscht.");
+    */
     cfg.versio = SVERSION;
     strcpy(cfg.wifissid, "");
     strcpy(cfg.wifiuser, "");
