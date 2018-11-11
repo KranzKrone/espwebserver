@@ -10,7 +10,7 @@ class ConfigManager {
     // The dataobject to save data
     struct cfgstruct
     {
-      char ver[3];
+      int versio;
       char wifissid[32];
       char wifiuser[36];
       char wifipass[64];

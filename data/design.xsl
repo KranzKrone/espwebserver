@@ -127,8 +127,8 @@
 			<div class="col l6 m6 s12">
 				<h5>MQTT Settings</h5>
 				<div class="input-field col s12">
-					<input type="text" name="mqtt_broker" class="form-control" value="{//root/settings/mqtt_server}" />
-					<label for="mqtt_broker">MQTT Broker</label>
+					<input type="text" name="mqtt_server" class="form-control" value="{//root/settings/mqtt_server}" />
+					<label for="mqtt_server">MQTT Broker</label>
 				</div>
 				<div class="input-field col s12">
 					<input type="text" name="mqtt_topic" class="form-control" value="{//root/settings/mqtt_topic}" />

@@ -48,7 +48,7 @@ ServerManager::ServerManager(Programm*_programm){
       (server->hasArg("hostname")) ? strcpy(programm->pconfigmanager->cfg.wifihost, server->arg("hostname").c_str() ) : 0;
       (server->hasArg("esptitle")) ? strcpy(programm->pconfigmanager->cfg.esptitle, server->arg("esptitle").c_str() ) : 0;
       // MQTT
-      (server->hasArg("mqtt_broker")) ? strcpy(programm->pconfigmanager->cfg.mqtt_server, server->arg("mqtt_broker").c_str() ) : 0;
+      (server->hasArg("mqtt_server")) ? strcpy(programm->pconfigmanager->cfg.mqtt_server, server->arg("mqtt_server").c_str() ) : 0;
       (server->hasArg("mqtt_topic")) ? strcpy(programm->pconfigmanager->cfg.mqtt_topic, server->arg("mqtt_topic").c_str() ) : 0;
       // WebHook
       (server->hasArg("wh_url")) ? strcpy(programm->pconfigmanager->cfg.webhook_url, server->arg("wh_url").c_str() ) : 0;
