@@ -47,6 +47,12 @@ ServerManager::ServerManager(Programm*_programm){
       (server->hasArg("wpw")) ? strcpy(programm->pconfigmanager->cfg.wifipass, server->arg("wpw").c_str() ) : 0;
       (server->hasArg("hostname")) ? strcpy(programm->pconfigmanager->cfg.wifihost, server->arg("hostname").c_str() ) : 0;
       (server->hasArg("esptitle")) ? strcpy(programm->pconfigmanager->cfg.esptitle, server->arg("esptitle").c_str() ) : 0;
+      // MQTT
+      (server->hasArg("mqtt_server")) ? strcpy(programm->pconfigmanager->cfg.mqtt_server, server->arg("mqtt_server").c_str() ) : 0;
+      (server->hasArg("mqtt_topic")) ? strcpy(programm->pconfigmanager->cfg.mqtt_topic, server->arg("mqtt_topic").c_str() ) : 0;
+      // WebHook
+      (server->hasArg("wh_url")) ? strcpy(programm->pconfigmanager->cfg.webhook_url, server->arg("wh_url").c_str() ) : 0;
+      (server->hasArg("wh_fp")) ? strcpy(programm->pconfigmanager->cfg.webhook_fp, server->arg("wh_fp").c_str() ) : 0;
       programm->pconfigmanager->saveConfig();
       Serial.println("Konfiguration im EEPROM gespeichert.");
     } 
@@ -63,6 +69,12 @@ ServerManager::ServerManager(Programm*_programm){
     output += "<wpw>" + String(programm->pconfigmanager->cfg.wifipass) + "</wpw>";
     output += "<hostname>" + String(programm->pconfigmanager->cfg.wifihost) + "</hostname>";
     output += "<esptitle>" + String(programm->pconfigmanager->cfg.esptitle) + "</esptitle>";
+    // MQTT
+    output += "<mqtt_server>" + String(programm->pconfigmanager->cfg.mqtt_server) + "</mqtt_server>";
+    output += "<mqtt_topic>" + String(programm->pconfigmanager->cfg.mqtt_topic) + "</mqtt_topic>";
+    // WebHook
+    output += "<wh_url>" + String(programm->pconfigmanager->cfg.webhook_url) + "</wh_url>";
+    output += "<wh_fp>" + String(programm->pconfigmanager->cfg.webhook_fp) + "</wh_fp>";
     output += "</settings>";
     
     so.so_content = output;

@@ -1,5 +1,8 @@
 #include "ConfigManager.h"
 #include <EEPROM.h>
+#include "Arduino.h"
+
+#define SVERSION 1
 
 ConfigManager::cfgstruct cfg;
 int ConfigManager::eeSize;
@@ -31,14 +34,26 @@ void ConfigManager::deleteConfig(){
 }
 
 bool ConfigManager::firstData(){
-  int n = sizeof(cfg.ver) / sizeof(cfg.ver[0]);
-  if(n == 0) {
-    strcpy(cfg.ver, "V01");
+  Serial.print("Version des Speichers ist: ");
+  Serial.println(cfg.versio);
+  
+  if(cfg.versio != SVERSION) {
+    /*
+     * Braucht man nicht wirklich.
+    Serial.println("Speicher: wird gelöscht.");
+    this->deleteConfig();
+    Serial.println("Speicher: wurde gelöscht.");
+    */
+    cfg.versio = SVERSION;
     strcpy(cfg.wifissid, "");
     strcpy(cfg.wifiuser, "");
     strcpy(cfg.wifipass, "");
     strcpy(cfg.wifihost, "");
     strcpy(cfg.esptitle, "ESP8266");
+    strcpy(cfg.mqtt_server, "");
+    strcpy(cfg.mqtt_topic, "");
+    strcpy(cfg.webhook_url, "");
+    strcpy(cfg.webhook_fp, "");
     return true;
   }
   return false;

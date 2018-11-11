@@ -11,6 +11,7 @@
 #include "DS18B20.h"
 #include "ServerManager.h"
 #include "Programm.h"
+#include "WebHook.h"
 
 #define MOTOR 4
 
@@ -25,6 +26,7 @@ DS18B20 sensoren(&oneWire);
 // Im Programm speichere ich die Veriablen für die Bewegungen und andere Dinge
 Programm programm(&conman, &sensoren);
 ServerManager servers(&programm);
+WebHook wh(&programm);
 
 /**
  * DE: Initialisierung des Programms
@@ -40,7 +42,7 @@ void setup() {
   // Die Konfiguration lade ich hier.
   conman.loadConfig();
   // if conman empty load data, better for work with them.
-  Serial.printf("Sind keine Daten im Speicher ? - %s\n", (conman.firstData()) ? "Ja":"Nein"); 
+  Serial.printf("Speicher ? - %s\n", (conman.firstData()) ? "Speicher wurde neu gesetzt.":"OK."); 
   
   // Hier wird WLan gestartet.
   wman.begin(conman.cfg.wifissid, conman.cfg.wifipass, conman.cfg.wifihost, "ESPDEV", "");
