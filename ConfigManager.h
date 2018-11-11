@@ -16,6 +16,10 @@ class ConfigManager {
       char wifipass[64];
       char wifihost[24];
       char esptitle[18];
+      char mqtt_server[124];
+      char mqtt_topic[64];
+      char webhook_url[124];
+      char webhook_fp[64];
     };
 
     // Config DBO
