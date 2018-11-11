@@ -135,6 +135,17 @@
 					<label for="mqtt_topic">MQTT Topic</label>
 				</div>
 			</div>
+			<div class="col l6 m6 s12">
+				<h5>WebHook Settings</h5>
+				<div class="input-field col s12">
+					<input type="text" name="wh_url" class="form-control" value="{//root/settings/wh_url}" />
+					<label for="wh_url">WebHook URL</label>
+				</div>
+				<div class="input-field col s12">
+					<input type="text" name="wh_fp" class="form-control" value="{//root/settings/wh_fp}" />
+					<label for="wh_fp">WebHook Fingerprint</label>
+				</div>
+			</div>
 			<div class="col s12">
 				<button class="btn waves-effect waves-light right" type="submit" name="save_eeprom" value="save"><i class="material-icons left">save</i>speichern</button>
 			</div>
