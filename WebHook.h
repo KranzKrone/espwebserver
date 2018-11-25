@@ -6,11 +6,7 @@
 class WebHook {
   
   public:
-    Programm* programm;
-    WebHook(Programm*_programm);
-    int sendUrlQuery(String _urlQuery);
-    
-    // Diese Funtkion funktioniert, sollte aber nur bedingt genutzt werden. TODO: Weiteres testen der Funktionen.
+    // Diese Funtkion funktioniert, sollte aber nur bedingt genutzt werden. TODO: Weiteres testen der Funktionen nötig.
     static int httpsGetAsyc(String _url, String _publicKey); 
 };
 

@@ -1,7 +1,7 @@
 #ifndef Programm_h
 #define Programm_h
 
-#include <WString.h>
+#include "Arduino.h"
 #include "ConfigManager.h"
 #include "DS18B20.h"
 
@@ -27,6 +27,13 @@ class Programm {
     void startup();
     // Sonoff S20 mache ich hier an oder aus. Die Lampe und das Relais hängen noch zusammen.
     void s20_switch();
+    
+    /**
+     * Funktion für das Versenden von Wetterdaten an einen Server.
+     * 
+     * see https://de.wikibooks.org/wiki/C%2B%2B-Programmierung:_Ausdr%C3%BCcke_und_Operatoren
+     */
+    void sendTempData();
 };
 
 #endif

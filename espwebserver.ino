@@ -11,7 +11,6 @@
 #include "DS18B20.h"
 #include "ServerManager.h"
 #include "Programm.h"
-#include "WebHook.h"
 
 #define MOTOR 4
 
@@ -26,7 +25,6 @@ DS18B20 sensoren(&oneWire);
 // Im Programm speichere ich die Veriablen für die Bewegungen und andere Dinge
 Programm programm(&conman, &sensoren);
 ServerManager servers(&programm);
-WebHook wh(&programm);
 
 /**
  * DE: Initialisierung des Programms
@@ -60,5 +58,8 @@ void loop() {
   // Hier dreht der Motor
   (programm.pdrehzahl > 200) ? analogWrite(MOTOR, programm.pdrehzahl) : analogWrite(MOTOR, 0);
   // Kleine Pause zum Erhalt der WiFi-Verbindung.
+  yield();
+  // Aufruf zum senden an einen WebHook
+  programm.sendTempData();
   yield();
 }
