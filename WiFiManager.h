@@ -15,6 +15,7 @@ class WiFiManager
     
     int reconnectcounter;
     String _lokalip;
+    bool _modus_ap = false;
     
     WiFiManager();
     bool begin(String wifissid, String wifipass, String wifihost, String apname, String appass);

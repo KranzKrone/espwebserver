@@ -20,6 +20,7 @@ bool WiFiManager::begin(String wifissid, String wifipass, String wifihost, Strin
   } else {
     bool _wifiap = WiFiManager::createWiFiAP(apname, appass);
     Serial.printf("Accespoint gestartet - %s.\n", ((_wifiap) ? "Ja" : "Nein"));
+    _modus_ap = true;
     return true;
   }
   return false;
@@ -56,6 +57,13 @@ bool WiFiManager::connectWiFi(String wifissid, String wifipass, String wifihost)
   WiFi.hostname(wifihost.c_str());
   MDNS.begin(wifihost.c_str());
   delay(200);
+
+  if(wifissid.length() == 0){
+    // Es wird gleich ein Accesspoint gestartet, wenn kein WLAN angegeben wurde.
+    Serial.println("Es wurde kein WLAN SSID angegeben, es wird ein Accespoint gestartet.");
+    return false;
+  }
+  
   (wifipass.length() == 0) ? WiFi.begin(wifissid.c_str()) : WiFi.begin(wifissid.c_str(), wifipass.c_str());
 
   int i = 0;

@@ -60,6 +60,8 @@ void loop() {
   // Kleine Pause zum Erhalt der WiFi-Verbindung.
   yield();
   // Aufruf zum senden an einen WebHook
-  programm.sendTempData();
+  if(!wman._modus_ap){
+    programm.sendTempData();
+  }
   yield();
 }
