@@ -14,6 +14,8 @@ void Programm::startup(){
   digitalWrite(P13LED, ponoff);
   pinMode(P12RELAY, OUTPUT);
   digitalWrite(P12RELAY, ponoff);
+  state = appState::RUNNING;
+  Serial.printf("Das Programm hat folgenden Status - %d\n", state);
 }
 
 void Programm::s20_switch(){
@@ -30,12 +32,18 @@ void Programm::s20_switch(){
 }
 
 void Programm::sendTempData(){
+  
     long _zeit = millis();
     int _time = (int) _zeit % 300000; // Sollten fünf Minuten sein. 300000 für 5 Minuten.
-    if( _time <= 1){
-      Serial.printf("Nächsten fünf Minuten - %d\n", _time);
-      String _tempOut = pds18b20->getDS18B20Celsius(0);
-      String _send = "https://userpage.fu-berlin.de/truppels/input.php?temp=" + _tempOut;
-      WebHook::httpsGetAsyc(_send, "415f636b60a226c1db91d7ba7cc94b30c1868557");
+   
+    if(_time <= 1){
+      if(state == appState::RUNNING){
+        Serial.printf("Nächsten fünf Minuten - %d\n", _time);
+        String _tempOut = pds18b20->getDS18B20Celsius(0);
+        String _send = pconfigmanager->cfg.webhook_url + _tempOut;
+        Serial.printf("http Status WebHook: %d\n", WebHook::httpsGetAsyc(_send, pconfigmanager->cfg.webhook_fp));
+      } else {
+        Serial.println("Die Daten konnten an keinen Datenserver gesendet werden, es besteht keine Verbindung zum Internet.");
+      }
     }
 }

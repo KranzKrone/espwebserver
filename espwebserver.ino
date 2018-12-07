@@ -12,8 +12,9 @@
 #include "ServerManager.h"
 #include "Programm.h"
 
-#define MOTOR 4
+#define DEBUG false
 
+#define MOTOR 4
 #define ONE_WIRE_BUS 5
 
 // Objects for the programm
@@ -34,8 +35,9 @@ void setup() {
  
   Serial.begin(115200);
   delay(200);
-  Serial.setDebugOutput(false);
-  Serial.println("Programm wird gestartet.");
+  Serial.setDebugOutput(DEBUG);
+  Serial.print("Programm wird gestartet - ");
+  Serial.println(programm.state);
 
   // Die Konfiguration lade ich hier.
   conman.loadConfig();
@@ -47,6 +49,10 @@ void setup() {
 
   Serial.println("HTTP server started");
   programm.startup();
+  // Ich setze im Programm, dass ich im Accesspoint Modus gestartet bin.
+  if(wman.wState == wman.wifiState::ACCESSPOINT){
+    programm.state = programm.appState::RUNNING_AP;
+  }
   yield();
 }
 
@@ -60,8 +66,6 @@ void loop() {
   // Kleine Pause zum Erhalt der WiFi-Verbindung.
   yield();
   // Aufruf zum senden an einen WebHook
-  if(!wman._modus_ap){
-    programm.sendTempData();
-  }
+  programm.sendTempData();
   yield();
 }

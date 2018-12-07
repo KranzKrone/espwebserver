@@ -1,7 +1,7 @@
 #include "WiFiManager.h"
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
-#include <WString.h>
+#include <Arduino.h>
 #include <vector>
 
 int reconnectcounter = 0;
@@ -16,13 +16,15 @@ bool WiFiManager::begin(String wifissid, String wifipass, String wifihost, Strin
   if(_wifi){
     Serial.println(WiFi.localIP());
     Serial.printf("Verbindung zu Netzwerk %s hergstellt, Hostname: %s.\n", wifissid.c_str(), wifihost.c_str());
+    wState = wifiState::CONNECTED;
     return true;
   } else {
     bool _wifiap = WiFiManager::createWiFiAP(apname, appass);
     Serial.printf("Accespoint gestartet - %s.\n", ((_wifiap) ? "Ja" : "Nein"));
-    _modus_ap = true;
+    wState = wifiState::ACCESSPOINT;
     return true;
   }
+  wState = wifiState::DICONNECTED;
   return false;
 }
 
@@ -57,13 +59,6 @@ bool WiFiManager::connectWiFi(String wifissid, String wifipass, String wifihost)
   WiFi.hostname(wifihost.c_str());
   MDNS.begin(wifihost.c_str());
   delay(200);
-
-  if(wifissid.length() == 0){
-    // Es wird gleich ein Accesspoint gestartet, wenn kein WLAN angegeben wurde.
-    Serial.println("Es wurde kein WLAN SSID angegeben, es wird ein Accespoint gestartet.");
-    return false;
-  }
-  
   (wifipass.length() == 0) ? WiFi.begin(wifissid.c_str()) : WiFi.begin(wifissid.c_str(), wifipass.c_str());
 
   int i = 0;
