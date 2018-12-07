@@ -9,9 +9,19 @@
 #define P12RELAY 12 
 
 class Programm {
-
-  public:
   
+  public:
+
+    enum appState {
+      NOSTATE,
+      STARTUP,
+      RUNNING,
+      RUNNING_AP,
+      SHUTDOWN
+    };
+
+    appState state = appState::NOSTATE;
+    
     int pdrehzahl = 0;
     int pdelayms = 0;
     String prange = "0";
@@ -24,6 +34,10 @@ class Programm {
     DS18B20* pds18b20;
 
     Programm(ConfigManager*_cm, DS18B20*_ds18b20);
+
+    /**
+     * Set startup data
+     */
     void startup();
     // Sonoff S20 mache ich hier an oder aus. Die Lampe und das Relais hängen noch zusammen.
     void s20_switch();

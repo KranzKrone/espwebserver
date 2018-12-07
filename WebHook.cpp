@@ -12,15 +12,14 @@ int WebHook::httpsGetAsyc(String _url, String _publicKey){
   
   HTTPClient http;
 
-  if(_publicKey == "") { 
-    return -99;
-  } else {
-    http.begin(_url, _publicKey);
+  if(_url.length() != 0 && _url.startsWith("http")) { 
+    (_publicKey.length() == 0) ? http.begin(_url) : http.begin(_url, _publicKey);
     int httpCode = http.GET();
-    Serial.printf("HTTPS Status %d\n", httpCode);
     // Testout Output
     // Serial.println(http.getString());
     http.end();
     return httpCode;
+  } else {
+    return -99;
   }
 }

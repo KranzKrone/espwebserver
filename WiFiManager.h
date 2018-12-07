@@ -1,13 +1,15 @@
 #ifndef WifiManager_h
 #define WifiManager_h
 
-#include <WString.h>
+#include <Arduino.h>
 #include <vector>
 
 class WiFiManager
 {
   public:
-  
+
+    enum wifiState{CONNECTED, ACCESSPOINT, DICONNECTED, SCAN};
+    
     struct WiFiData {
       char wifissid[64];
       char wifiissd[64];
@@ -15,7 +17,7 @@ class WiFiManager
     
     int reconnectcounter;
     String _lokalip;
-    bool _modus_ap = false;
+    wifiState wState = wifiState::DICONNECTED;
     
     WiFiManager();
     bool begin(String wifissid, String wifipass, String wifihost, String apname, String appass);
