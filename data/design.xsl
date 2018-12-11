@@ -63,12 +63,16 @@
 		</main>
 		
 		<footer class="page-footer">
-		<div class="footer-copyright">
 			<div class="container">
-				© 2018 by <a class="grey-text text-lighten-4" href="https://github.com/KranzKrone/espwebserver/">KranzKrone</a>
-				<a class="grey-text text-lighten-4 right" href="https://github.com/KranzKrone/espwebserver/">Code on GitHub.com</a>
+					<h5 class="white-text">Systemuhrzeit</h5>
+					<p id="innertime" class="grey-text text-lighten-4"></p>
+            </div>
+			<div class="footer-copyright">
+				<div class="container">
+					© 2018 by <a class="grey-text text-lighten-4" href="https://github.com/KranzKrone/espwebserver/">KranzKrone</a>
+					<a class="grey-text text-lighten-4 right" href="https://github.com/KranzKrone/espwebserver/">Code on GitHub.com</a>
+				</div>
 			</div>
-		</div>
 		</footer>
 		
 		<script type="text/javascript" src="/materialize.min.js"></script>
@@ -77,6 +81,7 @@
 
 			window.setInterval("time()", 1000);
 			var now = new Date('2014-01-01 10:11:55');
+			var element = document.getElementById("innertime");
 
 			document.addEventListener('DOMContentLoaded', function() {
 				var elems = document.querySelectorAll('.sidenav');
@@ -90,9 +95,8 @@
 				console.log("Lichtschalter wurde gedrückt. " + _url);
 			}
 			function time() {
-				now = new Date(d.getTime() + 1000);
-				// element = document.getElementById("time");
-				// element.innerHTML = thetime;
+				now = new Date(now.getTime() + 1000);
+				element.innerHTML = now.toLocaleString("de-DE");
 				console.log(now);
 			}
 			
