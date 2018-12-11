@@ -42,10 +42,11 @@ void setup() {
   // Die Konfiguration lade ich hier.
   conman.loadConfig();
   // if conman empty load data, better for work with them.
-  Serial.printf("Speicher ? - %s\n", (conman.firstData()) ? "Speicher wurde neu gesetzt.":"OK."); 
+  Serial.printf("%s\n", (conman.firstData()) ? "Speicher wurde neu gesetzt.":"OK."); 
   
   // Hier wird WLan gestartet.
-  wman.begin(conman.cfg.wifissid, conman.cfg.wifipass, conman.cfg.wifihost, "ESPDEV", "");
+  wman.begin(conman.cfg.wifissid1, conman.cfg.wifipass1, conman.cfg.wifihost, "ESPDEV", "");
+  wman.begin(conman.cfg.wifissid2, conman.cfg.wifipass2, conman.cfg.wifihost, "ESPDEV", "");
 
   Serial.println("HTTP server started");
   programm.startup();

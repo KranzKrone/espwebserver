@@ -2,8 +2,6 @@
 #include <EEPROM.h>
 #include "Arduino.h"
 
-#define SVERSION 1
-
 ConfigManager::cfgstruct cfg;
 int ConfigManager::eeSize;
 
@@ -45,9 +43,12 @@ bool ConfigManager::firstData(){
     Serial.println("Speicher: wurde gelöscht.");
     */
     cfg.versio = SVERSION;
-    strcpy(cfg.wifissid, "");
-    strcpy(cfg.wifiuser, "");
-    strcpy(cfg.wifipass, "");
+    strcpy(cfg.wifissid1, "");
+    strcpy(cfg.wifiuser1, "");
+    strcpy(cfg.wifipass1, "");
+    strcpy(cfg.wifissid2, "");
+    strcpy(cfg.wifiuser2, "");
+    strcpy(cfg.wifipass2, "");
     strcpy(cfg.wifihost, "");
     strcpy(cfg.esptitle, "ESP8266");
     strcpy(cfg.mqtt_server, "");

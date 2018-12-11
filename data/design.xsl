@@ -74,6 +74,10 @@
 		<script type="text/javascript" src="/materialize.min.js"></script>
 		<script type="text/javascript">
 			M.AutoInit();
+
+			window.setInterval("time()", 1000);
+			var now = new Date('2014-01-01 10:11:55');
+
 			document.addEventListener('DOMContentLoaded', function() {
 				var elems = document.querySelectorAll('.sidenav');
 				var instances = M.Sidenav.init(elems, options);
@@ -85,6 +89,13 @@
 				xhttp.send();
 				console.log("Lichtschalter wurde gedrückt. " + _url);
 			}
+			function time() {
+				now = new Date(d.getTime() + 1000);
+				// element = document.getElementById("time");
+				// element.innerHTML = thetime;
+				console.log(now);
+			}
+			
 		</script>
 	</body>
 </html>
@@ -99,18 +110,25 @@
 			<form>
 			<div class="col l6 m6 s12">				
 				<h5>WiFi</h5>
+				<h6>Network 1</h6>
 				<div class="input-field col s12">
-					<input type="text" name="wid" class="form-control" value="{//root/settings/wid}" />
-					<label for="wid">WiFi SSID</label>
+					<input type="text" name="wid1" class="form-control" value="{//root/settings/wid1}" />
+					<label for="wid1">WiFi SSID</label>
 				</div>
 				<div class="input-field col s12">
-					<input type="text" name="wuser" class="form-control" value="{//root/settings/wuser}" />
-					<label for="wuser">WiFi User</label>
+					<input type="password" name="wpw1" class="form-control" value="{//root/settings/wpw1}" />
+					<label for="wpw1">WiFi Password / User Password</label>
+				</div>
+				<h6>Network 2</h6>
+				<div class="input-field col s12">
+					<input type="text" name="wid2" class="form-control" value="{//root/settings/wid2}" />
+					<label for="wid2">WiFi SSID</label>
 				</div>
 				<div class="input-field col s12">
-					<input type="password" name="wpw" class="form-control" value="{//root/settings/wpw}" />
-					<label for="wpw">WiFi Password / User Password</label>
+					<input type="password" name="wpw2" class="form-control" value="{//root/settings/wpw2}" />
+					<label for="wpw2">WiFi Password / User Password</label>
 				</div>
+				<h6>Hostname</h6>
 				<div class="input-field col s12">
 					<input type="text" name="hostname" class="form-control" value="{//root/settings/hostname}" />
 					<label for="hostname">Hostname</label>

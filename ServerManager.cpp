@@ -42,9 +42,15 @@ ServerManager::ServerManager(Programm*_programm){
     
     // Konfiguarartion wird hier gespeichert.
     if(server->hasArg("save_eeprom")){
-      (server->hasArg("wid")) ? strcpy(programm->pconfigmanager->cfg.wifissid, server->arg("wid").c_str() )  : 0;
-      (server->hasArg("wuser")) ? strcpy(programm->pconfigmanager->cfg.wifiuser, server->arg("wuser").c_str() ) : 0;
-      (server->hasArg("wpw")) ? strcpy(programm->pconfigmanager->cfg.wifipass, server->arg("wpw").c_str() ) : 0;
+      // Wifi 1
+      (server->hasArg("wid1")) ? strcpy(programm->pconfigmanager->cfg.wifissid1, server->arg("wid1").c_str() )  : 0;
+      (server->hasArg("wuser1")) ? strcpy(programm->pconfigmanager->cfg.wifiuser1, server->arg("wuser1").c_str() ) : 0;
+      (server->hasArg("wpw1")) ? strcpy(programm->pconfigmanager->cfg.wifipass1, server->arg("wpw1").c_str() ) : 0;
+      // Wifi 2
+      (server->hasArg("wid2")) ? strcpy(programm->pconfigmanager->cfg.wifissid2, server->arg("wid2").c_str() )  : 0;
+      (server->hasArg("wuser2")) ? strcpy(programm->pconfigmanager->cfg.wifiuser2, server->arg("wuser2").c_str() ) : 0;
+      (server->hasArg("wpw2")) ? strcpy(programm->pconfigmanager->cfg.wifipass2, server->arg("wpw2").c_str() ) : 0;
+      // hostname
       (server->hasArg("hostname")) ? strcpy(programm->pconfigmanager->cfg.wifihost, server->arg("hostname").c_str() ) : 0;
       (server->hasArg("esptitle")) ? strcpy(programm->pconfigmanager->cfg.esptitle, server->arg("esptitle").c_str() ) : 0;
       // MQTT
@@ -64,9 +70,12 @@ ServerManager::ServerManager(Programm*_programm){
     }
  
     String output =  "<settings>";
-    output += "<wid>" + String(programm->pconfigmanager->cfg.wifissid) + "</wid>";
-    output += "<wuser>" + String(programm->pconfigmanager->cfg.wifiuser) + "</wuser>";
-    output += "<wpw>" + String(programm->pconfigmanager->cfg.wifipass) + "</wpw>";
+    output += "<wid1>" + String(programm->pconfigmanager->cfg.wifissid1) + "</wid1>";
+    output += "<wuser1>" + String(programm->pconfigmanager->cfg.wifiuser1) + "</wuser1>";
+    output += "<wpw1>" + String(programm->pconfigmanager->cfg.wifipass1) + "</wpw1>";
+    output += "<wid2>" + String(programm->pconfigmanager->cfg.wifissid2) + "</wid2>";
+    output += "<wuser2>" + String(programm->pconfigmanager->cfg.wifiuser2) + "</wuser2>";
+    output += "<wpw2>" + String(programm->pconfigmanager->cfg.wifipass2) + "</wpw2>";
     output += "<hostname>" + String(programm->pconfigmanager->cfg.wifihost) + "</hostname>";
     output += "<esptitle>" + String(programm->pconfigmanager->cfg.esptitle) + "</esptitle>";
     // MQTT
